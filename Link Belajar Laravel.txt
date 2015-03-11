@@ -1,0 +1,22 @@
+Mau share tempat situs belajar laravel bahasa inggris & Indonesia
+L4=Laravel 4
+L5=Laravel 5
+
+Inggris : [Free]
+1. http://andrewperkins.net/laravel [L4]
+2. https://mattstauffer.co/blog/laravel-5.0-form-requests [L5]
+3. http://learninglaravel.net/tags/tutorials?page=1 [L4]
+4. https://medium.com/laravel-4 [L4]
+5. http://laravel.com/docs/4.2/quick [L4]
+6. http://maxoffsky.com/tag/laravel/ [L4]
+7. https://scotch.io/tag/laravel [L4]
+
+Inggris : [Premium]
+1. https://laracasts.com/ [L4]
+2. http://code.tutsplus.com/tutor…/laravel-4-mastery--net-31233 [L4]
+
+Indonesia: [free]
+1. http://id-laravel.com/#sthash.p5LK3X4X.dpbs [L4 - L5]
+2. https://medium.com/laravel-indonesia [L4]
+3. http://aditiyagita.com/category/php/laravel/ [L4]
+4. http://digitalmapia.com/category/laravel-2/
