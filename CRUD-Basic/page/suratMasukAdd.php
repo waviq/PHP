@@ -2,7 +2,7 @@
     <table>
         <tr>
             <td>Asal Surat</td>
-            <td><input type="text" name="asal" placeholder="asal surat" value="<?php echo $_POST['asal']; ?>" /></td>
+            <td><input type="text" name="asal" placeholder="asal surat" value="<?php echo filter_input(INPUT_POST, 'asal') ?>" /></td>
         </tr>
         
         <tr>
