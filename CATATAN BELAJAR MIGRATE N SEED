@@ -1,0 +1,16 @@
+CATATAN BELAJAR MIGRATE N SEED
+
+1.	Migrations di Laravel
+	adalah suatu cara untuk membuat, memodifikasi dan menghapus suatu 
+	tabel dan relasi antar tabel melalui kode program.
+	Step-stepnya
+	a.	Create Database (secara manual)
+		misal: dg nama Db 'LatihanLaravel'
+	b.	Setting koneksi database
+		Pada laravel file yang mengatur database terletak di:
+		app/config/database.php, kemudian Edit file database.php
+		Pada bagian setting MySql, ubah setingan sesuai dg database n koneksi kita
+	c.	Mulai menggunakan 'migration'
+		- buka CMD di director project laravel kita, ketik perintah :
+		  php artisan migrate:install
+

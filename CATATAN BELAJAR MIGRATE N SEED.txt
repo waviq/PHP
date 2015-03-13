@@ -1,0 +1,70 @@
+CATATAN BELAJAR MIGRATE N SEED
+
+1.	Migrations di Laravel
+	adalah suatu cara untuk membuat, memodifikasi dan menghapus suatu 
+	tabel dan relasi antar tabel melalui kode program.
+	Step-stepnya
+	a.	Create Database (secara manual)
+		misal: dg nama Db 'LatihanLaravel'
+	b.	Setting koneksi database
+		Pada laravel file yang mengatur database terletak di:
+		app/config/database.php, kemudian Edit file database.php
+		Pada bagian setting MySql, ubah setingan sesuai dg database n koneksi kita
+
+	Memulai Proses migration
+
+	c.	Mulai menggunakan 'migration'
+		- buka CMD di director project laravel kita, ketik perintah :
+		  php artisan migrate:install
+		  jika berhasil akan ada keterangan : migration table created succeful
+	d.	Membuat tabel baru, exp: dg nama customers, (Buat via CMD)
+		Dengan perintah : 'php artisan migrate:make create_customers_table'
+		Jika berhasil maka d CMD akan ada keterangan 'created Migration:tahun_bulan_tanggal_created_custemer_table'
+	e.	Migrate akan otomatis di create yg letaknya di : app/database/migrations
+	f.	Buka dan Edit Filenya, tambahkan sesuai isi kolom tabel yang d perlukan
+	g.	Jika kolom sudah d isi, Maka Create tabel ke DB secara otomatis, dg 
+		perintah: php artisan migrate, tunggu dan cek d DB maka akan ter buat 
+		secara otomatis tabel 'customers'
+	h.	Untuk me Rollback setiap aksi kita d migrate, ketik dg perintah CMD :
+		'php artisan migrate:rollback'. Maka secara otomatis 
+		akan me rollback 1 (satu) aksi yg kita lakukan perintah migrate
+
+	i.	UNTUK INFO LANJUT N CARA MENGISI/MEMBUAT KOLOM DB, APA AJA PERINTAHNYA 
+		DAN PERINTAH LAINYA, KUNJUNGI : (http://laravel.com/docs/4.2/schema)/(http://laravel.com/docs/4.2/migrations)
+
+
+2.	Seeding
+	adalah proses bagaimana memasukan data ke tabel dengan menggunakan kode.
+	-	Seed adalah segala sesuatu yang harus d masukan/dimuat untuk sebuah
+		aplikasi guna memastikan aplikasi tersebut berjalan dengan baik
+	-	Seed data ini biasanya tidak bisa dirubah. Biasanya, data ini tidak akan 
+		d edit di aplikasi anda. tetapi jika perlu ada perubahan, maka seed data perlu di reload dan di deployed ulang pada aplikasi anda
+	-	Solusi yang terbaik adalah otomitisasi. Ketika anda memulai aplikasi anda, 
+		seed data ini harus siap. Atau aplikasi bisa menyediakan pilihan data (dropdown, radiobutton, dll)
+
+	Memulai Proses seeding
+	Karena pada tutorial migration d atas sudah membuat tabel 'customers', maka di totorial ini akan memasukan data (Seeding) ke dalam tabel yang sudah di bikin.
+	a.	Buat file baru dengan nama customersTableSeeder.php 
+		file d buat dalam folder : /app/database/seeds
+	b.	Isi filenya sesuai data yg d inginkan (Cara mengenai isi data ke tabel bisa 
+		d liat di link document resmi web) atau liat aja langsung di dalam difilenya
+	c. Jika sudah mengisi data di file 'customersTableSeeder.php', maka langkah 
+		selanjutnya adalah : 
+		memanggil di file 'app/database/seeds/DatabaseSeeder.php'
+		Edit File 'DatabaseSeeder.php', tambahkan pemangggilan filenya dg perintah:
+		$this->call('CustomersTableSeeder'); ==== untuk memanggil file seed
+		$this->command->info('Selama data sukses di masukan'); === untuk informasi klo sukses melakukan proses seeding
+
+		note: bila data file seeder nya ada lebih dari satu, maka lakukan perintah yg sama seperti memanggil file seeder lainya, contoh:
+
+		$this->call('CustomersTableSeeder'); << file ke 1
+		$this->call('AdminTableSeeders'); << file ke 2
+
+	d. Jika sudah selesai meng edit 2 file d atas, maka lakukan perintah d CMD :
+	   'php artisan migrate' dan 'php artisan db:seed'
+
+	   semua document laravel 4 bisa d liat di : https://github.com/laravel/docs/tree/4.0
+
+
+
+
