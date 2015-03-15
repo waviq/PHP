@@ -11,11 +11,12 @@
   |
  */
 
-Route::get('/about', function () {
-    return '<h1>Halo</h1>'
-            . 'Selamat Datang di web aplikasi saya <br>'
-            . 'Laravel emank keren.';
+Route::get('/about', 'HomeController@tampilkanAbout');
+
+Route::get('/halo', function () {
+    return View::make('halo');
 });
+
 
 Route::get('/testModel', function () {
 
