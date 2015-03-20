@@ -1,0 +1,21 @@
+Integrasi Bootstrap ke Laravel
+
+
+1.	Menggunakan Link Online
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	
+	dan untuk js script nya :
+	link rel="stylesheet" href=//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js">
+
+2.	Menggunakan Offline Mode (yg d gunakan d proyek larabook)
+
+	a.	Download bootstrap dan extract di folder: public/assets/
+	b.	Pasang/gunakan di layout view master, berikut setingan e :
+		
+		css Setting: <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
+
+		dan untuk js script nya :
+
+		<script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+
+

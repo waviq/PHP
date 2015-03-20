@@ -1,0 +1,11 @@
+cara buatnya
+
+1.	buat folder di: public - css - main.css
+2.	setting css dstu, bisa body, font, dll
+
+cara panggilnya 
+
+1.	masuk ke master layouts
+2.	masukan kode ini d head : 
+	<link rel="stylesheet" href="{{asset('css/main.css')}}">
+3.	Maka css akan bisa d gunakan

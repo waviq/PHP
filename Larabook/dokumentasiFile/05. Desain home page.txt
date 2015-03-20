@@ -1,0 +1,13 @@
+Desaig Home Page
+
+1.	Buka web Bootstap
+2.	Ke bagian component - navbar -fixed to top - copy code nya
+3.	buat file nav.blade.php, di view - layouts - partials - nav.blade.php
+4.	paste kan code bootstap ke file : nav.blade.php
+5.	Pindah lagi k file : layouts/default.blade.php, masukan (include nav.blade.php)
+6.	buka lagi web bootstrap - ke bagian default navbar -
+	copy code head nya aja ke file: 'nav.blade.php'
+7.	Biar ganti warna item d bagian top d tambahin : 'navbar-inverse'
+8.	Intinya edit2 sendiri sesuai selera, semua ada d web code e
+9.	Ke bagian Get started - ke example temple - navbar in action - copy code dstu - 
+	masukan k home.blade.php
