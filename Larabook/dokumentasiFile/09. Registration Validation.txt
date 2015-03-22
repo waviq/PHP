@@ -1,0 +1,106 @@
+Validasi Registrasi
+
+1.  ke bagian composer, tambahkan di require-dev
+    
+    "laracasts/validation": "1.1"
+2.  Klik kanan pada projectnya d netbeans - composer update dev
+3.  maka otomatis akan meng update isi composer d require yg
+    baru ditambahkan
+4.  Buat injeksi di file : registationController -> tambahkan fungsi injeksi
+    konstruktor berikut :
+
+    private $registrationForm;
+    function __construct($registrationForm) {
+        $this->registrationForm = $registrationForm;
+    }
+
+5.  Tambahkan Namescpace, Untuk Menggunakan atau memanggil namescpace,
+    menggunakan perintah 'use'
+
+    Sub-Namespace
+    Namespace juga dapat digunakan secara hirarki menggunakan sub-namespace 
+    seperti halnya direktori tempat penyimpanan file. Bahkan untuk membuat 
+    skrip yang dibuat lebih terorganisir dan mudah dilacak, penggunaan 
+    sub-namespace sangat dianjurkan
+
+6.  Tambahkan namespace pada file RegistrationController
+
+    use Larabook\Forms\RegistrationForm;
+
+7.  Klik kanan pada folder app -> buat folder baru n file class baru dengan ketentuan
+
+    app/Forms/RegistrationForm.php   -> Sesuai namespace pada no 6
+
+8.  Setup di file composer, karena pembuatan namescpace n beberapa 
+    folder dr no 6-7 perlu d regis, buka composer.json -> masukan code
+
+    "psr-4":{
+                    "Larabook\\":"app/Larabook"
+                }
+
+    masukan kode di atas d bagian autoload
+
+9.  Registrasi autoload di composer, lewat terminal dg perintah L
+
+    composer dumpautoload
+
+10. Buat aturan untuk Validasi Form registrasi di file ->RegistrationForm.php
+    masukan code berikut untuk validasinya :
+    
+    protected $rules = [
+        'username' => 'required|unique:users',
+        'email'=>'required|email|unique:users',
+        'password'=>'required|confirmed'
+    ];
+
+11. Untuk mengatasi exeptions/error yang terjadi pada 'Validation failed'
+    maka bisa menggunakan 'try-catch' atau penanganan eror secara global,
+    yaitu dengan cara :
+
+    a. ke directory : app/start/global.php
+       global.php = adalah file yang menangani segala macam exeption,
+       supaya errornya ilang, bisa d atasi d dalam file global.php
+    b. tambahkan code berikut k dalam file 'global/php'
+
+       App::error(function (Laracasts\Validation\FormValidationException $exception, $code){
+       
+            return Redirect::back()->withInput()->withErrors($exception->getErrors());
+       });
+
+      Arti dari code d atas adalah : jika eror d fungsi validasi, maka akan
+      dikembalikan/Redirect halaman semula/tidak ada aksi/di http://localhost:8000/register
+
+12. Ke file : create.blade.php, tambahkan code untuk memunculkan alert errornya
+    berikut codenya :
+
+    <!-- code buat terjadi eror pada inputan/validasi input -->
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+13. Biar lebih bersih aplikasi kita, buat file -> errors.blade.php ->
+    di directory layouts/partials/errors.blade.php
+    masukan code no 12 ke file: errors.blade.php
+
+14. Biar lebih rapi lagi tampilan lagi form registrasi, pada file create.blade.php
+    tambahkan code:
+    a.  di bagian paling atas : <div class="col-md-6">
+    b.  d bagian paling bawah : </div>
+    c.  Angka md-6, angka 6 menunjukan panjang form textfieldnya, klo mau 
+        lebih panjang tambahin aja angka ne lebih besar
+15. Biar posisi margin ke atas n rapi, d file main.css tambahkan code
+    
+    .container h1:first-of-type{
+        margin-top: 0;
+    }
+16. Biar lebih rapi lagi tampilan lagi form registrasi, pada file create.blade.php
+    tambahkan code:
+    a.  di bagian paling atas : <div class="row">
+    b.  d bagian paling bawah : </div>
+

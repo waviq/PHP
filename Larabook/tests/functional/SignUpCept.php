@@ -20,3 +20,5 @@ $I->seeRecord('users',[
     'email'=>'waviq.subkhi@gmail.com'
 ]);
 
+//skenario autontifikasi
+$I->assertTrue(Auth::check());

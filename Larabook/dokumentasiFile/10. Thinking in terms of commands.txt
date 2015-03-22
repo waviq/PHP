@@ -1,0 +1,145 @@
+despendensi dan gunanya daris step2 sebelumnya
+
+1.  laracasts commander 
+    di gunakan untuk membangun aplikasi CRUD yang mempunyai banyak 
+    bussiness logic
+    
+    Tujuanya (Goal)
+    bayangkan jika anda ingin membangun aplikasi untuk iklan, dan ketika 
+    banyaknya posting yg terjadi, maka jangan semua di taruh d controller,
+    dengan beberapa perintah handler kita dapat membuat kode kita lebih simple
+
+2.  D netbeans untuk inisialisasi field otomatis pada sebuah parameter,
+    caranya :-> teken saja alt + enter, maka :
+    maka otomatis akan d generate code: contoh dg variabel '$registration'
+    a. kode 1
+
+        /**
+         * @var RegistrationForm
+        */
+
+        private $registrationForm;
+
+    b. dan ter generate kode :
+
+        $this->registrationForm = $registrationForm;
+
+3.  ke bagian fungsi store di RegistrasiController, hapus fungsi yg lama dan 
+    gunakan code yg baru dengan code :
+
+        $command = new RegisterUserCommand;
+        $this->commandBus->execute($command);
+
+4.  ke directory app/Larabook ->buat fodler baru dg nama: Registration -> buat
+    class baru dengan nama 'class = RegisterUserCommand'
+    dan nama 'namescpace : Larabook\Registration'
+
+5.  Pada class RegisterUserCommand, bikin coctruktor otomatis - insert code
+
+    public $username;
+    public $email;
+    public $password;
+
+    code d atas bikin construktornya, manfaatkan filtur d netbeans
+
+6. di bagian fungsi store di file RegistrationController, tambahkan:
+
+    extract(Input::only('username','email','password'));
+        
+    $command = new RegisterUserCommand($username, $email, $password);
+
+7.  Test coba buka halaman register dan pencet tombol register,
+    jika error : RegisterUserCommandHandler, maka kita perlu bikin class baru
+8.  bikin class baru d directory :Larabook/Registration/RegisterUserCommandHandler.php
+    isi dengan code :
+
+    class RegisterUserCommandHandler implements CommandHandler {
+
+    //karna kelas implements jd perlu d ovveride fungsi ne
+    public function handle($command) {
+            $user = User::register(
+                        $command->username, $command->email, $command->password
+            );
+            return $user;
+        }
+    }
+9.  Kebagian model/user.php. masukan code:
+    public static function register($username, $email, $passsword){
+        $user = new static (compact('username','email','password'));
+        
+        //fungsi melakukan event register
+    }
+10. ke file RegisterUserCommandHandler.php
+    lakukan injeksi, dengan membuat construktor :
+    
+    protected $repository;
+    function __construct(UserRepository $repository) {
+        $this->repository = $repository;
+    }
+11. di bagian fungsi 'handle' tambahkan code:
+    
+    $this->repository->save($user);
+
+12. Buat folder n file clas dengan nama : UserRepository.php
+    di directory :Larabook/Users/UserRepository.php
+13. Pada class 'UserRepository.php' tambahkan code:
+
+    class UserRepository {
+    
+        public function save(User $user){
+            return $user->save();
+        }
+    }
+
+    JANGAN LUPA SELALU KLIK 'Fix Uses' untuk auto import
+
+14. Pindahkan file di directory model/User.php -> PINDAH KE 
+        Larabook/Users/User.php
+15. INGAT DENGAN MEMINDAHKAN FILE MODEL D DEFAULT LARAVEL, ARTINYA KITA WAJIB
+    MENGUBAH KONFIGURASI MODEL DATABASE TABEL KITA JUGA
+
+16. Tambahkan 'namescapce' d file User (file yg baru d pindah dr model), code ne :
+
+    namespace Larabook\Users\User; -> taruh d bagian paling atas file User.php
+
+17. Ubah setingan model User.php (karna file ne abis d pindah dr folder model)
+    Ke file app/config/auth.php  -> pada bagian model ubah menjadin :
+    
+    'model'=> 'Larabook\Users\User'
+
+18. Untuk mengubah password menjadi 'Hash'. Maka perlu d bikin fungsi :
+    
+    public function setPasswordAttribute($password){
+        $this->attributes['password']= Hash::make($password);
+    }
+19. Form registrasi sudah jalan
+20. Untuk aplikasi yg lebih complex kita mesti mengubah beberapa setingan lagi
+21. Buat file n folder :
+
+    Larabook/Core/CommandBus.php
+
+22. Pada file 'CommandBus.php' tambahkan namescapce n import(use)
+
+    namespace Larabook\Core;
+
+    use App;
+
+23. D file 'CommandBus.php' Buat fungsi :
+
+    public function execute($command){
+        return $this->getCommandBus()->execute($command);
+    }
+
+    public function getCommandBus(){
+        return App::make('Laracasts\Commander\CommandBus');
+    }
+
+24. Edit juga file d RegistrationController, liat d file aja dg teliti perubahan e
+
+25. JADI INTI NE DARI REGISTRASI USER VERSI KOMPLEKS APLIKASI URUTANE
+
+    RegistrasiController -> RegisterCommandHandler (return back to controller) ->
+
+    -> back RegistrasiController -> Bila ada exeption maka lempar ke file global.php
+        
+    

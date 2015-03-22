@@ -1,0 +1,11 @@
+
+Ini fungsi sederhana untuk registrasi user
+public function store() {
+        
+        $this->registrationForm->validate(Input::all());
+        $user = User::create(
+                Input::only('username', 'email', 'password')
+        );
+        Auth::login($user);
+        return Redirect::home();
+    }

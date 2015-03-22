@@ -1,0 +1,35 @@
+Buat tabel user via migrate
+
+1.  ketik d terminal :
+    php artisan migrate:make_users_table  ->teken enterr
+2.  isi datanya kolomnya
+    klo sudah ketik : php artisan migrate
+3.  ke file RegistrationController -> fungsi store di tambahin code :
+    
+    User::create(
+                Input::only('username', 'email', 'password')
+        );
+
+    fungsi kode di atas untuk menugaskan form yg boleh d input
+    adalah username, email n password (sesuai form yg ada di halaman Sign Up)
+
+4.  ke file model - Users -> tambahkan kode :
+
+    protected $fillable=['username','email','password'];
+
+    fungsi kode d atas untuk menugaskan si: username, email, password 
+    bekerja d aplikasi
+
+5.  Nomer 3 n 4 fungsinya biar gak terjadi juga error : massAssigmentsExeption
+
+6.  di File functional.suite.yml ->tambahkan kode berikut
+
+    enabled: [Filesystem, FunctionalHelper, Laravel4.2, Asserts]
+
+7.  ketik d terminal buat build file si Asserts : 
+    vendor/bin/codecept build
+    
+8.  di bagian registrationController -> fungsi store ->tambahkan variabel n kode :
+    
+    $user = User::create
+    Auth::login($user);
