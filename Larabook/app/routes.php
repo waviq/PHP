@@ -11,13 +11,19 @@
   |
  */
 
+/*
+  Event::listen('Larabook.Registration.Events.UserRegistered', function ($event){
+
+  });
+ * 
+ */
 
 /*
  * Redirect Home page
  */
 Route::get('/', [
-    'as'=>'home',
-    'uses'=>'PagesController@home'
+    'as' => 'home',
+    'uses' => 'PagesController@home'
 ]);
 
 
@@ -33,3 +39,40 @@ Route::post('register', [
     'as' => 'register_path',
     'uses' => 'RegistrationController@store'
 ]);
+
+/**
+ * Sessions
+ */
+Route::get('login', [
+    'as' => 'login_path',
+    'uses' => 'SessionsController@create'
+]);
+
+Route::post('login', [
+    'as' => 'login_path',
+    'uses' => 'SessionsController@store'
+]);
+
+Route::get('logout', [
+    'as' => 'logout_path',
+    'uses' => 'SessionsController@destroy'
+]);
+
+/**
+ * statuses
+ * get status
+ * post hasil status
+ */
+Route::get('statuses', [
+    'as' => 'statuses_path',
+    'uses' => 'StatusController@index'
+]);
+
+Route::post('statuses', [
+    'as' => 'statuses_path',
+    'uses' => 'StatusController@store'
+]);
+
+
+
+

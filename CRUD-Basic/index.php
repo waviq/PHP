@@ -16,15 +16,11 @@ and open the template in the editor.
 -->
 
 <?php 
-include 'inc/koneksi.php';
-include 'page/header.php';?>
-    </head>
-    <body>
-        
-        <?php include 'page/menu.php'; ?>
-        <br /><br />
-        <div> <?php include 'loader.php'; ?></div>
-        
-<?php include 'page/footer.php';
+include 'header.php';?>
+</head>
+<body>
+<?php include 'suratmasuk.php';?> 
+<br /><br />
+<?php include 'footer.php';
 
         

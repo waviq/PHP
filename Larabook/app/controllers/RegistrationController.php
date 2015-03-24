@@ -1,8 +1,9 @@
 <?php
 
+use Larabook\Core\CommandBus;
 use Larabook\Forms\RegistrationForm;
 use Larabook\Registration\RegisterUserCommand;
-use Larabook\Core\CommandBus;
+use Laracasts\Flash\Flash;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -34,6 +35,7 @@ class RegistrationController extends BaseController {
     function __construct(RegistrationForm $registrationForm) {
 
         $this->registrationForm = $registrationForm;
+        $this->beforeFilter('guest');
     }
 
     /*
@@ -64,7 +66,8 @@ class RegistrationController extends BaseController {
         
         Auth::login($user);
 
-        return Redirect::home();
+        Flash::message('Selamat datang new member Larabook');
+        return Redirect::home()->with('flash_message','welcome guys..!!');
 
         /*
           $this->registrationForm->validate(Input::all());

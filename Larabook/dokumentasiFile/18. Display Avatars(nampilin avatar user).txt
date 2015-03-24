@@ -1,0 +1,79 @@
+Proses membuat avatar saat kita sudah login
+
+1.  Buka halaman 'nav.blade.php'
+
+    a.  taruh cod eberikut d bawah dropdown
+
+        <img class="nav-gravatar" 
+            src="//www.gravatar.com/avatar/{{ md5($penggunaSaatIni->email) }}?s=30" 
+            alt="{{$penggunaSaatIni->username}}">
+
+    b.  web : www.gravatar.com, menyediakan auto avatar yg terintegrasi dg wordpress
+
+    c.  Biar lebih rapi, d halaman public/css/main.css, tambahkan code:
+
+        .nav-gravatar{
+            float: left;
+            position: relative;
+            top: -6px;
+            left: -8px;
+            border: 1px solid #555;
+        }
+
+    d.  Untuk mengecilkan size avatarnya, menggunakan perintah 's=30'
+        30 = angka besar kecil e, makin besar angka ne maka makin besar avatar e
+
+2.  Agar lebih pender Link <Img src""> nya, maka bisa d buatkan fungsi
+
+    a.  Buka file User.php
+    b.  Buat fungsi untuk gravatarLink()
+
+        public function gravatarLink(){
+        
+            $email = md5($this->email);
+            return "//www.gravatar.com/avatar/{$email}?s=30";
+        }
+
+    c.  Maka Link src ne di file 'nav.blade.php' menjadi : 
+
+        <img class="nav-gravatar" 
+            src="{{$penggunaSaatIni->gravatarLink()}}" 
+            alt="{{$penggunaSaatIni->username}}">
+
+3.  Bila menambahkan file di luar folder bawaan laravel, 
+    maka perlu di  load d composer, buka composer:
+
+    a.  misal menambahkan file : helper.php di directory : app/larabook
+    b.  Maka code load ygd masukin d composer e:
+
+        "autiload":{
+            "files":["app/Larabook/helpers.php"
+                ]
+            }
+
+
+CARA NAMPILIN AVATAR DG DESPENDENY:
+
+1.  Buka composer
+
+    a.  tambahkan di require-dev
+
+        "laracasts/presenter":"0.1.*"
+
+2.  Buat file di : app/Larabook/Users/UserPresenter.php
+
+3.  buka file 'UserPresenter.php', tambahkan fungsi 'gravatar'
+
+    public function gravatar($size=30){
+        $email = md5($this->email);
+        return "//www.gravatar.com/avatar/{$email}?s={$size}";
+    }
+
+4.  Buka 'User.php', tambahkan path berikut untuk ngambil fungsi no 3
+
+    protected $presenter = 'Larabook\Users\UserPresenter';
+
+5.  Buka kembali file 'nav.blade.php'. ubah lagi menjadi :
+
+    <img class="nav-gravatar" src="{{ $penggunaSaatIni->present()->gravatar }}" 
+        alt="{{$penggunaSaatIni->username}}">

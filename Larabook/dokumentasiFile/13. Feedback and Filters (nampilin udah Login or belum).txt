@@ -1,0 +1,48 @@
+Untuk mem filter link antara udah login atau belum :
+
+1.  ke file RegistrationController, pada bagian contruktor,  tambahkan code
+    injeksi yang buat filternya, fungsine buat nentuin sebelum login itu = tamu
+    dan setelah login = user,
+    Jadi dengan code d bawah ini, setelah user login, maka tidak akan bisa bisa
+    mengakses form 'register'.
+
+    $this->beforeFilter('guest');
+
+2.  Pada halaman home.blade.php, tambahkan code berikut supaya tombol 'Sign Up'
+    atau tombol buat registrasi HILANG ketika user sudah login
+
+    @if(Auth::guest())
+
+    @endif
+
+3.  Ke file 'BaseController.php' tambahkan code :
+    
+    View::share('penggunaSaatIni', Auth::user());
+
+4.  ke file 'home.blade.php' lagi, dg code no 3, maka sama saja artine dg yg no 1
+    namun untuk mempermudahkan, d ubah ke code :
+
+    @if(!penggunaSaatIni)
+
+    @endif
+
+    arti dari code d atas, jika user TIDAK logout statusnya, maka tombol n form
+    Register tidak dapat d akses user, namun jika status Logout, maka akan bisa 
+    mengakses form register n teken tombol Sign Up akan muncul
+
+5.  ke file 'nav.blade.php'. Supaya posisi dropdown k paling kanan, maka dg code
+
+    <ul class="nav navbar-nav navbar-right">
+
+6. Supaya jika sudah Login n nama user e keliatan layak e facebook klo udh login,
+   maka pada 'nav.blade.php' tulisan Drowdown ganti dengan code :
+
+    {{$penggunaSaatIni->username}}
+
+    code d atas fungsine menampilkan nama username yg login saat ini
+
+7.  Jika user tidak ada atau user tidak login, maka akan ada 'Link' 'LogIn' df code
+
+    @else
+    <li><a href="/login">Log In</a></li>
+    

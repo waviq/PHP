@@ -1,0 +1,252 @@
+Proses Membuat posting status
+
+1.  Buat folder n class di :
+    
+    app/Larabook/Statuses/Status.php
+
+2.  Buka file 'Status.php' isi dengan :
+
+    class Status extends Eloquent{
+
+        protected $fillable = ['body'];
+
+    }
+
+    Code d atas fungsine biar gak terjadi mass assigment error
+
+3.  Buat table dengan cara migration, caranya:
+    
+    a   php artisan migrate:make create_statuses_table
+    b   Buka file hasil migrate yg d create dr 'a'
+    c.  Isi file migration dg code:
+
+        Schema::create('statuses', function (Blueprint $table){
+               $table->increments('id');
+               $table->integer('user_id')->index();
+               $table->text('body');
+               $table->timestamps();
+            });
+    d.  Migrate ke database supaya tabel 'status' dapat d create di database:
+
+            php artisan migrate
+    
+    e.  Dari perintah d atas, Maka otomatis d database akan 
+        ter buat 'tabel statuses' :
+
+4.  Buat form untuk posting status di 'views/statuses/index.blade.php'
+
+5.  buka file 'routes.php' 
+
+    a.  Ubah dari code:
+
+        Route::get('statuses','StatusController@index');
+
+        menjadi: 
+
+        Route::get('statuses', [
+            'as'=>'statuses_path',
+            'uses'=>'StatusController@index'
+        ]);
+    
+    b.  Tambahkan fungsi untuk 'post' postingan (ketika pencet tombol post):
+
+        Route::post('statuses', [
+            'as' => 'statuses_path',
+            'uses' => 'StatusController@store'
+        ]);
+
+6.  Buat class di directory : Larabook/Statuses/PublishStatusCommand.php
+
+7.  Buka file 'PublishStatusCommand.php'. Buat konsruktor injeksinya
+
+    public $body;
+
+    function __construct($body) {
+        $this->body = $body;
+    }
+
+8.  Buka file 'StatusController.php'. buat fungsi 'store' untuk aksi 'post'
+    
+        public function store()
+	{
+            $command = new PublishStatusCommand(Input::get('body'));
+	}
+
+9.  Pada 'StatusController.php' tambahkan
+
+        use CommandBus  -> jangan lupa d fix import/fix use
+
+    dan pada fungsi 'store' tambahkan :
+
+        $this->execute($command);
+
+10. Buat class baru di : 'Larabook/Statuses/PublishStatusCommandHandler.php'
+    
+    -   Buat class implementasi pada class : PublishStatusCommandHandler
+
+        class PublishStatusCommandHandler implements CommandHandler
+
+    -   Karna kelas implements, maka WAJIB d override fungsinya :
+
+        //ini fungsi override nya
+        public function handle($command) {
+            Status::publish($command->body);
+        }
+
+11. Untuk menjalankan objek 'Status dg fungsi 'publish' pda no 10, 
+    maka perli d buat fungsinya: 
+    
+    -   buka file di : App/Larabook/Statuses/Status
+    -   Buat fungsi 'publish' dengan code:
+
+        public static function publish ($body){
+            $status = new static (compact('body'));
+        
+            $status->raise(new StatusWasPublished);
+        }
+    NOTE :
+    compact = nge buat array dari variabel dan beserta memberikan nilainya
+
+12. Untuk menterjemahkan objek 'StatusWasPublished'. Maka perlu d bikin classnya:
+
+    -   Buat folder n class di directory :
+        app/Larabook/Statuses/Events/StatusWasPublished.php
+    
+    -   Pada file 'StatusWasPublished.php' buat konstruktornya untuk injeksi
+
+        public $body;
+    
+        function __construct($body) {
+            $this->body = $body;
+        }
+
+13. Pada file 'Status.php'. kasih return value 
+
+        return $status;
+
+14. Pada file PublishStatusCommandHandler :
+    
+    -   Masukan dalam variabel
+            Status::publish($command->body);
+    
+    -   Maka menjadi :
+             $status = Status::publish($command->body);
+
+15. Buat file : Larabook/Users/StatusRepository.php
+
+16. Kembali ke file PublishStatusCommandHandler.php -> bikin konstruktor injeksi
+    dari no 15 atau file 'StatusRepository.php'
+
+    a.  Bikin konstruktornya
+    
+        protected $statusRepository;
+   
+        function __construct(StatusRepository $statusRepository) {
+            $this->statusRepository = $statusRepository;
+        }
+    b.  pada fungsi 'handle'. tambahkan code:
+
+        $this->statusRepository->save($status);
+
+17. Untuk mengaktivkan fungsi 'save' pada no 16.b, maka perlu d bikin fungsi ne:
+
+    a.  Buka file StatusRepository.php
+    b.  Buat fungsi save nya
+
+        public function save(Status $status){
+        
+            $status->save();
+        
+            Auth::user()->statuses()->save($status);
+        }
+
+18. Buka Kembali file: 'StatusController.php'
+    
+    a.  Tambahkan code Auth::user()->id
+    b   tambahkan code d atas setelah body, maka akan berupa code lengkap e:
+        
+        $command = new PublishStatusCommand(Input::get('body'), Auth::user()->id);
+
+19. Ke halaman publisStatusCommand, tambahka kosntruktor '$userId' pada kosntruktor
+
+    public $body;
+    public $userId;
+
+    function __construct($body, $userId) {
+        $this->body = $body;
+        $this->userId = $userId;
+    }
+
+20. Pada fungsi 'handle' yang ada di PublishStatusCommandHandler, tambahkan '$userId'
+
+    $this->statusRepository->save($status, $command->userId);
+
+21. Pada file 'StatusRepository.php'. ubah fungsine yg lama menjadi :
+
+     public function save(Status $status, $userId){
+        
+        return User::findOrFail($userId)
+                ->statuses()
+                ->save($status);
+        }
+
+22. Pada file 'StatusRepository' (no 21), 'fungsi statuses' belom d bikin
+    di dalam file 'User.php', maka perlu di bikin fungsine dolo di file 'User'
+
+    public function statuses(){
+        return $this->hasMany('Larabook\Statuses\Status');
+    }
+
+23. Untuk menunjukan bahwa Status yg d bikin itu punya User, maka
+    perlu d  bikin fungsi 'user' di file 'Status.php' dan jadi d arahkan
+    ke directory 'User.php'
+
+    public function user(){
+        return $this->belongsTo('Larabook\Users\User');
+    }
+
+
+24. Pada file 'Status.php' tambakan variabel '$body', di parameternya:
+
+        $status->raise(new StatusWasPublished($body));
+    
+    Karena pada class 'StatusWaspublished' punya parameter '$body' 
+    jd wajib d tambahkan parameternya
+
+25. Buka file : views/statuses/index.blade.php
+
+    a.  Pada kata 'Status' di ganti dengan 'body', d ganti semuane
+
+26. Untuk menangkap pengiriman post status, mesti d tangkep d kelas 'dispatch'
+    caranya :
+
+    a.  Buka file 'PublishStatusCommandHandler.php',
+    b.  Import class : use Laracasts\Commander\Events\DispatchableTrait;
+    c.  injeksi class e dg status yg d post
+
+        $this->dispatchEventsFor($status);
+
+27. Ubah fungsi store di StatusController menjadi :
+
+    public function store() {
+
+        //kirim k db, dengan : get body/pesan e, userId yg kirim, dan validasi ne
+        $input = array_add(Input::get(), 'userId', Auth::id());
+        
+        //validasi input an dari user, gk boleh kosong
+        $this->publishStatusForm->validate($input);
+
+        //eksekusi perintahnya
+        $this->execute(PublishStatusCommand::class, $input);
+        
+        //muncul pesan notifikasi
+        Flash::message('Selamat, sukses melakukan update status');
+        
+        //direct k halaman semula, form jd kosong lg
+        return Redirect::back();
+    }
+    
+
+        
+    
+

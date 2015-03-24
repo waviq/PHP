@@ -1,0 +1,26 @@
+Membuat Flash Message
+
+1.  Ke bagian composer.json ->tambahin despendency baru d bagian require :
+
+    "laracasts/flash":"~1.0"
+
+2.  setelah d update composer ->instal flash despendeny ne. Carane :
+    ke bagian App.php (ada d config) -> tambahin code :
+
+    'Laracasts\Flash\FlashServiceProvider' dan d bagian alias dg code:
+    'Flash'           => 'Laracasts\Flash\Flash'
+
+3.  ke file layouts - default.blade.php, tambahkan code biar muncul flash message:
+
+    @include('flash::message')
+
+4.  NOTE:
+    Ada beberapa macam tipe message flash, di antaranya :
+    a.  Flash::message
+    b.  Flash::Overlay
+    c.  Flash::error
+    
+   
+    
+
+    

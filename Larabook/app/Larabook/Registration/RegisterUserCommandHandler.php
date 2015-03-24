@@ -6,14 +6,16 @@
  * and open the template in the editor.
  */
 
-
+use Larabook\Users\User;
 use Larabook\Users\UserRepository;
 use Laracasts\Commander\CommandHandler;
-use Larabook\Users\User;
+use Laracasts\Commander\Events\DispatchableTrait;
 
 
 //use Larabook\Users\User;
 
+/**
+/**
 /**
  * Description of RegisterUserCommandHandler
  *
@@ -21,10 +23,12 @@ use Larabook\Users\User;
  */
 class RegisterUserCommandHandler implements CommandHandler {
 
+    use DispatchableTrait;
+
     protected $repository;
 
     /**
-     * 
+     *
      * @param UserRepository $repository
      */
     function __construct(UserRepository $repository) {
@@ -41,6 +45,8 @@ class RegisterUserCommandHandler implements CommandHandler {
                         $command->username, $command->email, $command->password
         );
         $this->repository->save($user);
+        
+        $this->dispatchEventsFor($user);
 
         return $user;
     }

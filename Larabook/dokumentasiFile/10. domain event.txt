@@ -1,0 +1,22 @@
+1.  Ke user.php -> bagian function register -> tambahkan :
+
+    $user->raise(new UserRegisted($user));
+
+2.  buat kostruktor di class UserRegisted, code e:
+
+    class UserRegisted {
+    
+        public $user;
+    
+        function __construct(User $user) {
+           $this->user = $user;
+        }
+    }
+
+    Jangan lupa d import 'User' n bikin namescpace nya
+
+3. Kebagian routes.php -> setting Event Listen e buat nge cek
+
+    Event::listen('Larabook.Registration.Events.UserRegistered', function ($event){
+        dd('send notification emails');
+    });

@@ -18,7 +18,10 @@ CATATAN BELAJAR MIGRATE N SEED
 		  php artisan migrate:install
 		  jika berhasil akan ada keterangan : migration table created succeful
 	d.	Membuat tabel baru, exp: dg nama customers, (Buat via CMD)
-		Dengan perintah : 'php artisan migrate:make create_customers_table'
+		Dengan perintah : 
+		
+		'php artisan migrate:make create_customers_table'
+		
 		Jika berhasil maka d CMD akan ada keterangan 'created Migration:tahun_bulan_tanggal_created_custemer_table'
 	e.	Migrate akan otomatis di create yg letaknya di : app/database/migrations
 	f.	Buka dan Edit Filenya, tambahkan sesuai isi kolom tabel yang d perlukan

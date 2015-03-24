@@ -1,0 +1,38 @@
+Jadi BDD adalah, mencatat semua record yang dilakukan developer/client di aplikasi kita atau mencatat skenario yang akan kita lakukan di program kita
+
+1.	ketik d terminal -> vendor/bin/codecept bootstrap -> maka otomatis akan meng 
+	generate beberapa file tertentu ke project kita
+2.	ketik d terminal-> 
+	vendor/bin/codecept build
+	maka akan meng create beberapa file lagi
+
+3.	ketik terminal : -> vendor/bin/codecept generate:cept functional SignUp,
+	maka otomatis akan meng create file SignUpCept.php di directory : tests/functional/SignUpCept.php
+
+4.	Isi skenario aplikasi kita di file: SignUpCept.php
+5.	jika sudah d isi skenarionya, jalankan skenarionya via terminal:
+	vendor/bin/codecept run functional
+6.	Ke bagian file home.blade.php -> hapus tombol registernya ->ganti dengan :
+	
+	{{link_to_route('register_path','Sign Up',null,['class'=>'btn btn-lg btn-primary'])}}
+
+7.	Ke bagian file routes.php, tambahkan route 'registrasi' dari tombol d file home 
+	d atas, codenya bisa d liat d routes.php -> bagian cooment registrasi
+
+8.	create new file di: registration/create.blade.php
+	isi form di file create.blade.php
+
+9.	Karena di file create.blade.php -> form actionya ='POST', maka buat fungsi 
+	'strore' di RegistrasiController.php
+10.	Jika regis berhasil, maka akan di Redirect(di alihkan) ke posisi halaman home 	
+	web kita
+11.	Setting kembali di file routes.php, untuk menerima pesan 'reddirect' dari 
+	fungsi 'store'
+
+
+
+Untuk melihat kekurangan apa aja dari sekenario aplikasi ayng kita rencanakan, ketik di terminal :
+	
+	vendor/bin/codecept run functional
+
+JIKA SUDAH TIDAK ADA EROR, MAKA HASIL RUN SEKENARIO KITA JG TIDAK AKAN MUNCUL ERROR/FAILED

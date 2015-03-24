@@ -1,0 +1,11 @@
+1.	create require composer d terminal:
+	way/generator --dev  ->tunggu saja ampe download selesai
+2.	ke config/app.php
+	tambahkan kode ini d paling bawah : 'way\Generators\GeneratorsServiceProvider'
+3.	Jika tahap 1 sudah selesai, buka terminal ->php artisan -> maka akan ada 
+	'generate' file, isine d antaranya : generate:controller, generate:migration,dll
+4.	Edit file composer.json.
+	tambahkan file sesuai yg ada d file composer.json d file larabook
+5.	terminal : composer update
+	
+

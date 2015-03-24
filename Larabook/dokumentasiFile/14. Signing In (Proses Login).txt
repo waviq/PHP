@@ -1,0 +1,178 @@
+Buat Skenarionya
+
+1.  Create skenario login
+
+    vendor/bin/codecept generate:cept functional SignIn
+
+2.  Isi skenarionya di file 'SignInCept.php'
+
+3.  Jika ingin menambahkan fungsi skenario (karna tidak ada dalam fungsi default),
+    maka ke fle 'FunctionalHelper', isi fungsine dalam file tersebut
+
+4. ke file App/tests, create file fixtures.yml
+
+5.  agar user dalam skenario bisa random, maka d file 'FunctionalHelper.php',d buat
+
+    public function haveAnAccount($overrides=[]){
+        TestDummy::create('Larabook\Users\User', $overrides);
+    }
+
+Buat proses Login ::
+
+1. ke file 'routes.php', tulis Code untuk proses Session Login e dolo
+
+    Route::get('login', [
+        'as' => 'login_path',
+        'uses' => 'SessionsController@create'
+    ]);
+
+2.  Buat file 'SessionsController.php'  bisa dg manual create class Controller,
+    atau dengan terminal :
+
+    php artisan controller:make SessionsController
+
+    dari perintah d atas maka akan otomatis generate create 
+    file : 'SessionsController.php' di directory : app/controller
+
+3.  Untuk perintah nampilin form Sign In atau form untuk Login, maka di controller
+    lakukan dengan perintah code: 
+
+    public function create()
+	{
+            return View::make('sessions.create');
+	}
+    code d atas d d letakan pada file : SessionsController.php
+
+4.  Buat folder n file untuk mengarahkan no 3, di : View/sessions/create.blade.php
+
+5.  buka file: 'View/sessions/create.blade.php' isi dengan code:
+
+    @extends('layouts.default')
+
+    @section('content')
+    
+    @stop
+
+6.  Isi Form untuk Form Login/Sign In nya di file : sessions/create.blade.php
+
+7.  Untuk membuat validasi supaya textfield gak boleh kosong d kolom
+    email n password, maka perlu d tambahkan code:
+
+    'required'=>'required'   -> letakkan ini di textfield email/password
+
+    contoh : {{Form::email('email',null,['class'=>'form-control','required'=>'required'])}}
+
+8.  di file 'sessions/create.blade.php' bagian form open tambahkan code:
+
+    ['route'=>'login_path'] -> jdi begini : {{Form::open(['route'=>'login_path'])}}
+
+9.  Karena pada no 8, bersifat 'POST' method untuk mengirim data ne,
+    maka di settingan route nya di buat 'post' method n 'store' fungsi
+
+    Route::post('login', [
+        'as' => 'login_path',
+        'uses' => 'SessionsController@store'
+    ]);
+
+10. Untuk membuat status ketika user sudah login, maka perlu d setting route nya
+    buka file 'routes.php' dan tambahkan code:
+
+    Route::get('statuses','StatusController@index');
+
+11. dari Route code no 10, maka perlu d buat directory n file untuk mengarahkan e
+
+12. Maka perlud buat file class controller baru dengan cara manual/terminal :
+        
+        php artisan controller:make StatusController
+    
+    maka akan ter generate file: StatusController.php di app/controller
+
+13. Untuk ngambil input, validasi dan login. Maka tambahkan 
+    code d 'SesionsController.php'
+
+    - Buat contruktornya bwt injeksi:
+      
+        function __construct(SignInForm $signInForm) {
+            $this->beforeFilter('guest');
+            $this->signInForm = $signInForm;
+        }
+
+    - Buat fungsi store()nya
+        //ngambil form input
+        $input = Input::only('email', 'password');
+
+14. setelah tahap no 13, maka d buat validasi form login e,
+15. create file di direcotry : 'Larabook/Forms/SignInForm.php'
+16. Lakukan validasi di file 'SignInForm.php'. dengan code
+
+     protected $rules = [
+        'email'=>'required',
+        'password'=>'required'
+    ];
+
+17. code komplit d fungsi 'store()' pada file 'SessionController' adalah :
+
+    public function store()
+	{
+            
+            //ngambil form input
+            $formData = Input::only('email', 'password');
+            
+            //validasi
+            $this->signInForm->validate($formData);
+            
+            //jika valid, maka coba untuk login/try sign
+            if(Auth::attempt($formData)){
+                //redirect to statuses
+                Flash::message('Welcome back...!');
+                return Redirect::intended('statuses');
+            }
+	}
+
+18. Biar bisa mengarahka ke : 'return Redirect::intended('statuses')',
+    maka perlu membuat fungsi 'index' di file 'StatusController.php'
+
+        public function index()
+	{
+		return View::make('statuses.index');
+	}
+
+19. dari fungsi index no 19, maka perlud  buat folder dan file baru, create di:
+
+    views/statuses/index.blade.php
+
+20. pada file 'statuses/index.blade.php'. seperti biasa d tambahkan code:
+
+    @extends('layouts.default')
+
+    @section('content')
+
+    @stop
+
+21. Untuk menjalankan fungsi 'index()' di 'StatusController', maka perlu
+    di setting di 'routes.php' nya
+
+        Route::get('statuses', 'StatusController@index');
+
+22. Buat fungsi Logout pada 'SessionController' :
+
+        public function destroy(){
+            
+            Auth::logout();
+            return Redirect::home();
+        }
+
+23. pada SessionController, buat fungsi 'destroy' fungsine untuk Logout user
+    
+        public function destroy(){
+            Flash::message('Kamu sekarang sudah Logout, terimakasih.');
+            Auth::logout();
+            return Redirect::home();
+        }
+24. untuk menjalankan fungsi destroy, maka perlu d setting d routes nya :
+
+    Route::get('logout', [
+        'as' => 'logout_path',
+        'uses' => 'SessionsController@destroy'
+    ]);
+    

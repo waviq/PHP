@@ -1,0 +1,32 @@
+Untuk Membuat Link Login dan Register dg routes:
+
+1.  Buka nav.blade.php
+    
+    -   pada bagian :
+        
+            <li><a href="/login">Log In</a></li>
+        
+        ganti dengan 
+
+            <li>{{ link_to_route('login_path', 'Log In') }}</li>
+
+2.  Tambahkan Link untuk Register, atas no 1,
+
+    <li>{{ link_to_route('register_path', 'Register') }}</li>
+
+
+Agar pada tulisan 'Larabook' klo d klik mengarahkan k Home, maka
+
+1.  Buka nav.blade.php
+
+    pada bagian
+
+        <a class="navbar-brand" href="#">Larabook</a>
+    
+    Ganti dengan:
+    
+        <a class="navbar-brand" {{link_to_route('home','Larabook')}}</a>
+
+Note PENTING: 
+
+semua Link harus berdasarkan 'route' atau setingan e ada di 'routes.php'
