@@ -1,0 +1,63 @@
+Cara Membuat DB Seed Untuk mengisi Tabel User dan Statuses secara random
+
+1.  buka composer
+2.  tambahkan di reqiore-dev : "fzaninotto/faker":"1.4.*"
+3.  Update composer
+
+4.  Create file seeder d app/database/seed
+    
+    File yang d create :
+
+    a.  StatusesTableSeeder.php
+
+        public function run()
+	{
+		$faker = Faker::create();
+                $userIds = User::lists('id');
+
+		foreach(range(1, 1000) as $index)
+		{
+                    Status::create([
+                        'user_id' => $faker->randomElement($userIds),
+                        'body' => $faker->sentence(),
+                        'created_at' => $faker->dateTime()
+                    ]);
+		}
+	}
+
+        Keterangan :
+        
+        -   faker = adalah despendeny untuk random create value tabe;
+        -   code d atas untuk meng create random value pada tabel 'statuses'
+
+    b.  UsersTableSeeder.php
+
+        class UsersTableSeeder extends Seeder {
+
+            public function run()
+            {
+                $faker = Faker::create();
+
+                foreach(range(1, 50) as $index)
+                {
+                    User::create([
+                        'username' => $faker->word . $index,
+                        'email' => $faker->email,
+                        'password' => 'secret'
+                    ]);
+                }
+               }
+        }
+
+        Keterangan :
+        
+        -   faker = adalah despendeny untuk random create value tabe;
+        -   code d atas untuk meng create random value pada tabel 'user'
+        -   code d atas create username, email secara random namun 
+            dengan passwrd 'secret'
+
+5.  Untuk menjalankan file Seedernya, buka terminal 
+
+    php artisan db:seed
+
+6.  maka akan otomatis ter generate semua value yg udh d definisikan d file Seeder

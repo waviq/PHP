@@ -16,8 +16,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     use UserTrait,
         RemindableTrait,
-        EventGenerator, 
-        PresentableTrait;
+        EventGenerator,
+        PresentableTrait,
+        FollowTrait;
+
+
     /*
      * field yang titugaskan melakukan aksi sesuatu,
      */
@@ -30,7 +33,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
      * @var string
      */
     protected $table = 'users';
-    
+
     /**
      * Path untuk nampilin avatar dari User
      * @var type 
@@ -66,20 +69,29 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $user->raise(new UserRegistered($user));
         return $user;
     }
-    
-    
+
     /**
      * Fungsi untuk menunjukan User bisa punya banyak status
      * @return type
      */
-    public function statuses(){
+    public function statuses() {
         return $this->hasMany('Larabook\Statuses\Status');
     }
-    
-    public function gravatarLink(){
-        
+
+    public function gravatarLink() {
+
         $email = md5($this->email);
         return "//www.gravatar.com/avatar/{$email}?s=30";
+    }
+
+    /**
+     * Menjelaskan Jika di berikan ke user yang sama
+     * @param \Larabook\Users\User $user
+     * @return type
+     */
+    public function is(User $user) {
+        if (is_null($user)) return false;
+        return $this->username == $user->username;
     }
 
 }

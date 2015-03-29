@@ -1,0 +1,80 @@
+Untuk Mendesain Status agar lebih rapi:
+
+1.  Agar posisi d tengah
+
+    a.  Buka file 'index.blade.php',
+        tambahkan <div class>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+            </div>
+        </div>
+
+2.  Agar status yg kita tulis ada avatarnya, maka perlu di tambahkan :
+
+    a. pada file 'index.blade.php' ke bagian bawah <article>, tambahkan avatar
+
+       <div class="pull-left">
+            <img class="media-object" src="{{ $status->user->present()->gravatar }}"
+                alt="{{$status->user->username}}">
+       </div>
+
+    b.  pada bagian <article>, tambahkan class css. Maka menjadi
+
+        <article class="media">
+
+        </article>
+
+3.  Agar statusnya muncul nama kita yg upload status, maka
+
+    a.  Tambahkan heading untuk nampung nama kita
+
+        <div class="media-body">
+            <h4 class="media-heading">{{ $status->user->username }}</h4>
+            {{$status->body}}
+        </div>
+
+4.  Agar ada last waktu kapan terakhir update status, maka :
+    
+    tambahkan dalam <div> no 3, bawah e <h4>
+
+        <p>{{$status->created_at->diffForHumans()}}</p>
+
+5.  Membuat border di dalam comment kita
+
+    a.  Inisialisasi css e, maka tambahkan kata misa 'border-comment'
+    b.  'border-comment' nantine akan terbaca untuk menambahkan css yg kita custom
+    c.  buka file 'main.css' tambahkan :
+
+        .border-comment{
+            border: 1px solid #e3e3e3;
+            background: white;
+            padding: 1em;
+            margin-bottom: 2em;
+        }
+
+6.  Untuk meng urutkan secara Asending, pesan urut dri yg paling update 
+    tercepet - hinggga terlama, dengan cara
+
+    a.  Buka file 'StatusRepository.php'
+    b.  ubah code pada fungsi 'getAllForUser'
+
+        return $user->statuses()->get();
+
+    c.  di Ubah menjadi :
+
+        return $user->statuses()->with('user')->latest()->get();
+
+7.  Biar tampilan border di text area body status lebih rapi
+
+    a.  tambahkan <div class="status-post"> di atas 'Form::open' dan d tutup
+        sebelum 'Form::close'
+    b.  pada option 'a': 'status-post' adalah class untuk css untuk edit border
+    c.  Jadi buka main.css tambahkan :
+
+    
+
+        
+
+    

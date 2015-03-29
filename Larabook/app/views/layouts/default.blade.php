@@ -3,7 +3,7 @@
     <html>
         <head>
             <meta charset="UTF-8">
-            <title>Document</title>
+            <title>Larabook</title>
             <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
             <link rel="stylesheet" href="{{asset('css/main.css')}}">
             

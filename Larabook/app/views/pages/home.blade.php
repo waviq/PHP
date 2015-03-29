@@ -4,7 +4,7 @@
 
 <div class="jumbotron">
         <h1>Welcome to Larabook</h1>
-        <p>Selamat di home page larabook, silahkan registrasi terlebih dahulu</p>
+        <p>Selamat di home page TegalBook</p>
         
 <!--    Jika user TIDAK logout-->
         @if(! $penggunaSaatIni)

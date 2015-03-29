@@ -1,0 +1,156 @@
+Membuat Profile User
+
+1.  Untuk membuat user secara urut abjad
+
+    a.  Buka UserReposiotry
+        pada fungsi getPaginated, ubah return menjadi :
+
+        return User::orderBy('username','asc')->paginate($howMany);
+
+2.  Membuat nama user bisa d klik
+    
+    a.  Buka halaman 'routes.php', tambahkan settingan route :
+
+        Route::get('@{username}', [
+            'as' => 'profile_path',
+            'uses' =>'UsersController@show'
+        ]);
+
+        Route d atas untuk mengarahkan Link ke : Larabook.com/@namaUsername
+
+    b.  Untuk membuat Link e, buka 'users/index.blade.php' tambahkan menjadi :
+
+        {{link_to_route('profile_path',$user->username, $user->username)}}
+
+3.  Membuat avatar bisa d klik, layaknya Link, bisa mengarah k halaman user
+
+    a.  Buka halaman 'avatar2.blade.php'
+    b.  tambahkan code ini, d letakan sebelum 'image avatar',
+    
+        <a href="{{route('profile_path', $user->username)}}">
+            imageAvatar
+        </a>
+
+4.  Membuat fungsi 'show()' supaya tidak eror dr no 3 ketika d klik
+
+    a.  Buka 'UserRepository.php'. Buat fungsi untuk mencari user by username
+
+        public function findByUsername($username){
+        
+            return User::where($username)->first();
+        }
+
+    b.  Buat fungsi 'show()' di file UsersController, dg melibatkan fungsi 'a'
+
+        public function show($username){
+            
+            $user = $this->userRepository->findByUsername($username);
+            
+            return View::make('users.show')->withUser($user);
+        }
+
+    c.  Untuk menterjemahkan option 'b' di atas, maka perlu d buat file baru
+
+        -   create file : Users/show.blade.php
+        -   extends dari 'layouts master(default.blade.php)'
+
+            @extends('layouts.default')
+
+            @section('content')
+
+            @stop
+
+           
+
+5.  Agar ketika link/avatar d klik masuk k profile username e maka:
+
+    a.  Buka file 'show.blade.php' tambahkan dg code:
+
+        <div class="row">
+            <div class="col-md-3">
+                <h1>
+                    {{$user->username}}
+                </h1>
+                @include('layouts.partials.avatar2')
+            </div>
+    
+            <div class="col-md-6">
+                @foreach($user->statuses as $status)
+                    @include('statuses.partials.status')
+                @endforeach
+            </div>
+        </div>
+
+    NOTE:
+
+    Pada code:  @foreach($user->statuses as $status)
+
+    Arti code d atas adalah : Memanggil status yang d tulis username sebelumnya,
+    di tampilkan dalam user profile
+
+6.  Membuat Link drow down ke arah profile ketika (ketika sudah login)
+
+    a.  Buka 'nav.blade', tambahkan code berikut pada deretan drop down
+
+        <li>{{link_to_route('profile_path','Your Profile',
+                $penggunaSaatIni->username)}}
+        </li>
+
+7.  Agar lebih rapi, pecah menjadi partial isi dari :
+
+    a.  isi dari : statuses/index.blade.php -> cut isi filenya hingga tersisa :
+
+        @extends('layouts.default')
+
+        @section('content')
+
+        <div class="row">
+    
+            @include('statuses.partials.publish-status-form')
+    
+        </div>
+        @stop
+
+    b.  buat file di : statuses/partials/partials.publish-status-form.blade.php
+    c.  paste code yg telah d cut ke dalam file :'partials.publish-status-form'
+
+8.  Untuk mengurutkan comment terbaru biar posisi d paling atas:
+
+    a.  Buka file 'UserRepository.php' pada fungsi 'findByUsername'
+        Edit menjadi :
+
+        public function findByUsername($username){
+        
+            return User::with(['statuses' =>  function($query){
+            
+                $query->latest();
+            
+            }])->whereUsername($username)->first();
+        }
+
+        NOTE :
+        
+            -   'with' = di gunakan untuk menghubungkan antar tabel
+            -   d kasus d atas (a) tabel users -> di hubungkan dg tabel statuses,
+                tujuane supaya mendapatkan query yg ada dalam comment user
+            -   'latest' = untuk mengurutkan berdasarkan yg terakhir comment -
+                sampai ke yang comment terlama
+            
+9.  Agar hanya user yang login yg bisa update status, Caranya :
+
+    a.  Buka 'show.blade.php' masukan code berikut:
+
+        @if($user->is($penggunaSaatIni))
+            @include('statuses.partials.publish-status-form')
+        @endif
+
+       Keterangan:
+       -    maksud kode d atas adalah fungsi di jalankan (form status) atau d tampilkan
+            hanya jika samangan user yang login
+       -    untuk bisa membaca fungsi 'is'? mesti d buat fungsi ne d 'User.php'
+
+            public function is(User $user){
+                return $this->username == $user->username;
+            }
+
+

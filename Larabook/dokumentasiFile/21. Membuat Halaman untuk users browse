@@ -1,0 +1,159 @@
+Membuat halaman browse untuk Users
+
+1.  Setting route untuk users
+
+    Route::get('users','UsersController@index');
+
+2.  Buat file Controllernya :
+
+        php artisan controller:make UsersController
+
+    Maka akan otomatis ter generate file 'UsersController.php'
+
+3.  Buka file UsersController, buat konstruktor untuk meng Injek 'UserRepository'
+
+    protected $userRepository;
+    
+    function __construct(UserRepository $userRepository) {
+        $this->userRepository = $userRepository;
+    }
+
+4.  Gunakan hasil injek user repository di fungsi 'index'
+
+        public function index()
+	{
+            $$users= $this->userRepository->getPaginated();
+            
+            return View::make('users.index')->withUsers($users);
+	}
+
+5.  Untuk membaca objek 'getPaginated' di file 'UserRepository', maka di file
+    'UserReposiotry' perlu di bikin fungsi 'getPaginated'
+
+    public function getPaginated($howMany = 25){
+        return User::simplePaginate($howMany);
+    }
+
+6.  Untuk menterjemahkan atau menjabarkan pada no 4, maka perlu d bikin :
+
+    a.  folder di views/Users
+    b.  dalam folder 'Users' bikin file: index.blade.php
+    c.  jadi directory ne : views/Users/index.blade.php
+
+7.  Buka file 'Users/index.blade.php'
+
+    a.  Untuk menampilkan semua username yang ada dalam database dg:
+
+        @foreach($users as $user)
+            <li>
+                {{$user->username}} 
+            </li>
+        @endforeach
+
+8.  Pindah/pecah source image avatar ke 'folder partials'
+
+    a.  buka file status.blade.php
+
+        cut code :
+
+        <img class="media-object" src="{{ $status->user->present()->gravatar }}" 
+             alt="{{$status->user->username}}">
+
+    b. create file di : layouts/partials/avatar.blade.php
+
+       paste code dalam file avatar.blade:
+
+       <img class="media-object" src="{{ $status->user->present()->gravatar }}" 
+             alt="{{$status->user->username}}">
+             
+    c.  Buka kembali file status.blade.php
+
+        - include 'avatar.blade' ke dalam file status.blade
+
+          <div class="pull-left">
+              @include('layouts.partials.avatar')
+          </div>
+
+9.  Membuat avatar di 'halaman users'
+
+    a.  Buka file dg nama :'avatar2.blade.php'
+
+        layouts/partials/avatar2.blade.php
+
+    b. buka file: avatar2.blade.php
+
+       <img class="media-object" src="{{ $user->present()->gravatar }}" 
+             alt="{{$user->username}}">
+
+        NOTE: Perbedaan antara file 'avatar' vs 'avatar2' adalah:
+          
+            - pada 'avatar' menggunakan :{{$statuses->user->username}}
+
+            - pada 'avatar2' menggunakan : {{$user->username}}
+    
+    c.  Buka file : views/Users/index.blade.php; masukan include code k avatar2
+
+            @include('layouts.partials.avatar2')
+
+        Fungsi @include d atas untuk membuka link avatarnya
+
+10. Untuk membuat avatar menjadi 'Circle' atau 'Bulet', maka perlu : 'img-circle'
+    maka code ne menjadi,
+
+    <img class="media-object img-circle" src="{{ $status->user->present()->gravatar }}" 
+             alt="{{$status->user->username}}">
+
+    Tambahkan code d atas d file avatar/avatar2/nav, agar avatar jd bulet
+
+11. Membuat ukuran avatar lebih gede lagi
+
+    a.  buka file 'avatar2.blade.php' tambahkan di 'src'
+
+        src="{{ $user->present()->gravatar(isset($size)? $size:30) }}"
+
+        -   default dari parameter gravatar adalah 30, kita bisa ubah
+            lebih gede d parsing angkane, carane :
+
+    b.  buka file 'index.blade.php' milik si views/users
+        -   pada bagian @include, tambahkan parsing angka ukuran avatar e
+
+            @include('layouts.partials.avatar2',['size' => 70])
+      
+    c.  dengan parsing angka '70' d atas, maka ukuran avatar akan lebih gede
+
+    NOTE: 
+    
+    Code: (isset($size)? $size:30), perlu d deklarasikan agar bisa d pasing di 
+          file index.blade.php, klo gak d inisialisais dg code tersebut, maka 
+          parsing akan error
+
+12. Untuk menampilkan halaman (Page) di data users ketika d buka :
+
+    a.  buka file index.blade.php milik users, paling bawah tambahkan code:
+
+        {{ $users->links() }}
+
+        code d atas menampilkan links page user
+
+    b.  Untuk mengubah tampilan mode type 'Page' nya :
+
+        -   Buka config/view.php
+
+        -   pada bagian code: 'pagination' => 'pagination::slider-4'
+
+        -   ubah menjadi : 'simple'
+
+                'pagination' => 'pagination::simple'
+
+        -   tampilan 'Page' akan berubah menjadi 'previous dan next'
+
+        
+
+    
+
+        
+
+
+
+
+    

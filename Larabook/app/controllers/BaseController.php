@@ -3,6 +3,15 @@
 class BaseController extends Controller {
 
     /**
+     * @param $validation
+     * @return coba2
+     */
+    public function redirrectBackWithErrors($validation)
+    {
+        return Redirect::back()->withErrors($validation->messages());
+    }
+
+    /**
      * Setup the layout used by the controller.
      *
      * @return void
@@ -13,6 +22,7 @@ class BaseController extends Controller {
         }
 
         View::share('penggunaSaatIni', Auth::user());
+        View::share('login', Auth::user());
     }
 
 }

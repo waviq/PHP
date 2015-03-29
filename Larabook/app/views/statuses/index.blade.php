@@ -2,30 +2,23 @@
 
 @section('content')
 
-<div>
+<div class="row">
+    
+    
+    
+    <div class="col-md-6 col-md-offset-3">
 
-    <h1>Post a Status</h1>
+        @include('statuses.partials.publish-status-form')
+        
 
-    @include('layouts.partials.errors')
-    {{Form::open()}}
 
-    <!--status form input-->
-    <div class="form-group">
-        {{Form::label('body','Status:')}}
-        {{Form::textarea('body',null,['class'=>'form-control'])}}
+        <!--    Statuses di ambil dari StatusController@index();-->
+        @foreach($statuses as $status)
+            @include('statuses.partials.status')
+        @endforeach
+
+
     </div>
-
-    <!--Submit input-->
-    <div class="form-group">
-        {{Form::submit('Post Status',['class'=>'btn btn-primary'])}}
-    </div>
-
-
-    {{Form::close()}}
     
-    
-    
-    
-
 </div>
 @stop

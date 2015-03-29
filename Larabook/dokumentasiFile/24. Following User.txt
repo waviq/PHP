@@ -1,0 +1,241 @@
+Following User
+
+1.  Membuat tombol follow nya
+    a.  buka file 'show.blade.php', tambahkan code:
+        @include('users.partials.follow-form')
+
+        code d atas untuk: menunjukan bikin file baru untuk follow form
+
+    b.  create file di :
+        users/partials/follow-form.blade.php
+
+    c.  Buat suatu tombol untuk follow user d dalam file : 'follow-form'
+
+        {{Form::open()}}
+            <button type="submit" class="btn btn-primary">Follow {{$user->username}}</button>
+        {{Form::close()}}
+
+    d.  Pindahkan file avatar2 -> ke dalam directory : users/partials/avatar2.blade.php
+
+2.  Membuat tombol follow berfungsi
+
+    a.  buka routes, tambahkan :
+
+        Route::post('follows',[
+           'as' => 'follows_path',
+            'uses' => 'FollowsController@store'
+        ]);
+
+        Route::delete('follows/{id}',[
+            'as' => 'follow_path',
+            'uses' => 'FollowsController@destroy'
+        ]);
+
+    b. untuk menterjemahkan code d atas, maka perlu d bikin Controllernya
+    c.  Create file : FollowsController.php
+    d.  buka file : 'follow-form.blade.php', tambahkan
+
+        {{Form::open(['route'=>'follows_path'])}}
+
+        kode d atas mengarahkan ketika d pencet tombol follow, maka akan lari ke routes
+        path : follows_path
+
+    e.  Buka 'FollowsController' -> buat fungsi store :
+
+        $input = array_add(Input::get(),'userId',Auth::id());
+        $this->execute(FollowUserCommand:class, $input);
+
+    f.  Buka class php untuk FollowUserCommand dan FollowUserCommandHandler
+
+        -   create FollowUserCommand = Larabook/Users/FollowUserCommand.php
+        -   create FollowUserCommandHandler = Larabook/Users/FollowUserCommandHandler.php
+
+    g.  Buka file : 'FollowUserCommand'
+        -   create variabel yg d perlukan :
+                protected $userId
+                protected $userIdToFollow;
+        -   Buat construktor
+       
+    h.  Buka FollowUserCommandHandler
+        -   Buat contruktornya dan injeksi UserRepository
+
+            protected $userRepo;
+
+            function __construct(UserRepository $userRepo)
+            {
+                $this->userRepo = $userRepo;
+            }
+        
+        -   Implements class commandhandler
+        
+            class FollowUserCommandHandler implements CommandHandler
+
+        -   Class implements wajib d ovveride fungsinya
+        
+            public function handle($command)
+            {
+                $user = $this->userRepo->findById($command->userId);
+                $this->userRepo->follow($command->userIdToFollow, $user);
+
+                return $user;
+            }
+
+            KETERANGAN :
+            
+            $user = $this->userRepo->findById($command->userId);
+            
+            $user = variabel menampungnya
+            $this = menunjukan kelas ini (kelas FollowUserCommandHandler)
+            userRepo = injeksi manggil class UserRepository
+            findById = memanggil fungsi 'findById' dalam class UserRepository
+            $command = hanya parameter aja, bisa d ganti sesuai selerea
+            userId = variabel public yg ada pada file 'FollowUserCommand'
+                     karena bersifat public makanya bisa d baca d dalam package
+                     atau folder yg sama
+
+            $this->userRepo->follow($command->userIdToFollow, $user);
+
+            $this = menunjukan kelas ini (kelas FollowUserCommandHandler)
+            userRepo = injeksi manggil class UserRepository
+            follow = memanggil fungsi 'follow' dalam class UserRepository
+            userIdToFollow = variabel public punya si 'FollowUserCommand'
+            $user = manggil varial $user yg telah menampung beberapa fungsi
+            
+    i   Buka file UserRepository (untuk impelemtasiin yg ada d option 'h' )
+    
+        -   buat fungsi 'findById'
+
+            public function findById($id){
+                return User::findOrFail($id);
+            }
+       
+        -    Buat fungsi 'follow'
+            
+             public function follow($userIdToFollow, User $user)
+             {
+                return $user->followedUsers()->attach($userIdToFollow);
+             }
+
+             Keterangan:
+
+             function findById
+
+             User = manggil kelas User.php
+             findOrFail = manggil kelas findOrFail yang ada dalam kelas Model
+             $id = parameternya
+             
+             fungsi 'follow'
+             
+             return = mengembalikan nilai, atau menjalankan nilainya
+             $user = variabel dr parameter class User
+             $followedUsers = memanggil fungsi yg ada pada class 'User'
+             attach = fungsi yang ada pada class 'belongsToMany'
+             $userIdToFollow = variabel injeksi construktor yg ada pada class
+                               FollowUserCommand
+
+             NOTE :
+             Class User.php -> extends dari Eloquent
+                -   Jadi class User mewarisi semua fungsi yang ada pada class 'Eloquent'
+                -   Class Eloquent adalah class yg berisi fungsi-fungsi tentang 
+                    database (relasi, panggil tabel, dll)
+
+    j.  Buka File 'User.php' (untuk imlementasi dr option 'i')
+    
+        -   Buang fungsi followedUsers
+
+            public function followedUsers(){
+                return $this->belongsToMany(static::class, 'follows', 'follower_id', 'followed_id')->withTimestamps();
+            }
+
+    k.  Buka file follow-form.blade.php (untuk menjalankan tombol Follow)
+
+        {{ Form::open(['route' => 'follows_path']) }}
+            {{ Form::hidden('userIdToFollow', $user->id) }}
+            <button type="submit" class="btn btn-primary">Follow {{ $user->username }}</button>
+        {{ Form::close() }}
+
+        Keterangan :
+        
+        -   ['route' => 'follows_path'] = mengarahkan ke : followsController@store
+        -   Form::hidden('userIdToFollow', $user->id) 
+            -   userIdToFollow = inisialisasi k DB userId followed nya (orang yg di add)
+            -   $user->id = mengirimkan k DB dari class User -> ID dr user yg mau d add
+            -   {{ $user->username }} =  menampilkan Username dari nama yg akan kita follow
+
+
+Membuat Supaya User yang sudah menjadi followers, maka tombol follow nya 
+jadi gak muncul n kasih keterangan bahwa sudah menjadi followers nya :
+
+1.  Buka File 'follow-form-blade', tambahkan code :
+
+    @if($user->isFollowedBy($penggunaSaatIni))
+        
+        <p>Anda sudah menjadi followers {{ $user->username }}</p>
+
+    @else
+        //JALANKAN PERINTAH UNTUK MENAMPILKAN TOMBOL FOLLOW
+    @endif
+
+    KETERANGAN :
+    
+    @if($user->isFollowedBy($penggunaSaatIni))
+        Jika sudah menjadi followers, maka akan menampilkan :
+            Anda sudah menjadi followers
+        Namun, jika belom jd followers, maka :
+            Tombol Follow akan muncul
+    @endif
+
+    $user = class User
+    isFollowedBy = manggil fungsi 'isFollowedBy' yang ada pada class User
+    $penggunaSaatIni = semacam variabel penanda
+
+Menampilkan aktivitas User yg kita follow
+
+1.  Buka StstusController
+    a.  Ubah code d fungsi index(),
+        
+        dari : getAllForUser() -> getFeedForUser
+
+2.  Buka StatusRepository
+    Buat fungsi getFeedForUser()
+
+    public function getFeedForUser(User $user){
+        
+        $userIds = $user->followedUsers()->lists('followed_id');
+        $userIds[] = $user->id;
+        
+        return Status::whereIn('user_id', $userIds)->latest()->get();
+    }
+
+    KETERANGAN
+    $userIds = variabelnya
+    $user = parameter dari fungsi getFeedForUsers
+    $followedUsers = menanggil fungsi followedUsers dalam class User
+    $userOds[] = variabel array untuk menampung ID ne
+    latest = untuk mengurutkan secara yang terbaru - terlama berdasarkan waktu 
+             update statusnya
+
+3   Membuat supaya ketika sudah Login - klik home - mengarah ke link 'statuses'
+
+    a.  Buka file : 'nav.blade.php'
+
+        pada code :
+
+            {{ route('home') }}
+
+        tambahkan menjadi
+
+           {{ Auth::check()? route('statuses_path'):route('home') }}
+
+        KETERANGAN:
+        
+        -   Auth::check = cek autentifikasi user dalam keadaan login/tidak
+        -   route(statuses_path) = Jika memang udh login, maka akan d arahkan 
+            ke alamat 'statuses'
+        -   route('home') = jika tidak login, maka d arahkan k halaman 'home'
+
+        
+
+
+                
+

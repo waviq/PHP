@@ -1,0 +1,145 @@
+1.  Menghilangkan Button Follow Untuk account kita sendiri
+
+    a.  Buka show.blade.php
+        -   Tambahkan code ini d antara code untuk nampilin tombol form Follow
+
+            @if($user->is($penggunaSaatIni))
+                //button follow form disini
+            @endif
+
+            Keterangan:
+            
+            -   @unless = @if(! kondisi)
+                          Jadi fungsi untuk mengatakan 'Jika Tidak'
+            -   $penggunaSaatIni = Share variabel dari 'BaseController'
+
+2.  Membuat Tombol UnFollow
+
+    a.  Buka follow-form.blade.php
+
+        Tambahkan form untuk unfollow
+        
+        {{ Form::open(['method' => 'DELETE', 'route' => ['unfollows_path', $user->id]]) }}
+            {{ Form::hidden('userIdToFollow', $user->id) }}
+            <button type="submit" class="btn btn-danger">Unfollow {{ $user->username }}</button>
+            
+        {{ Form::close() }}
+
+3.  Mengaktivkan fungsi tombol unfollow
+
+    a.  Seperti biasa, bikin class UnfollowUserCommand dan UnfollowUserCommandHandler
+
+    b.  Buka FollowsController, buat fungsi destroy (fungsi untuk unfollow)
+
+        public function destroy($userIdToUnFollow) {
+            $this->execute(unfollowUserCommand::class);
+        
+            Flash::success('Sukses berhenti menjadi followers');
+        
+            return Redirect::back();
+        }
+
+    c.  Buka UnfollowUserCommand, buat konstruktornya
+
+        public $userId;
+        public $userIdToUnfollow;
+    
+        function __construct($userId, $userIdToUnfollow) {
+            $this->userId = $userId;
+            $this->userIdToUnfollow = $userIdToUnfollow;
+        }
+
+    d.  Buka UnfollowUserCommandHandler
+
+        -   Buat injeksi untuk nembak ke UserRepository
+
+            protected $userRepo;
+    
+            function __construct(UserRepository $userRepo) {
+                $this->userRepo = $userRepo;
+            }
+
+        -   Override fungsi implements nya
+
+            public function handle($command) {
+        
+                $user = $this->userRepo->findById($command->userId);
+        
+                $this->userRepo->unfollow($command->userIdToUnfollow, $user);
+            }
+
+    e.  Buka UserRepository, implements dari fungsi option 'd' diatas 
+
+        -   Buat fungsi unfollow()
+
+            public function unfollow($userIdToUnfollow, User $user)
+            {
+                return $user->followedUsers()->detach($userIdToUnfollow);
+            }
+
+    f.  Buka 'follow-form'
+
+        -   Masukan variabel untuk unfollow nya : 'userIdToUnfollow'
+
+            {{ Form::hidden('userIdToUnfollow', $user->id) }}
+
+4.  Membuat posisi 'username' di bawah avatar
+
+    a.  buka 'show.blade'
+
+       <div class="media">
+            <div class="pull-left">
+                @include('users.partials.avatar2',['size'=>100])
+            </div>
+        </div>
+
+5.  Menampilkan jumlah status yg d posting
+
+    a.  Tambahkan code berikut
+
+        {{$user->statuses->count() }}
+        maka menjadi 
+            <p class="text-muted"> {{$user->statuses->count() }} Status</p>
+
+        kode d atas mengecek d database, berapa 'count' status yg user
+        tersebut kumpulkan
+
+6.  Menampilkan berapa jumlah followernya
+
+    a.  Buat fungsi 'followers()' di User.php
+
+        public function followers(){
+        
+            return $this->belongsToMany(static::class, 'follows', 'followed_id', 'follower_id')
+                ->withTimestamps();
+        }
+
+    b.  Buka show.blade
+
+        Masukan code berikut untuk nampilin folowers
+        
+        {{$user->followers->count() }}
+        maka menjadi  
+
+            <p class="text-muted"> {{$user->followers->count() }} Follower</p>
+
+7.  Menampilkan berapa jumlah followernya dg 'Avatar' nya
+
+    a.  Buka show.blade
+
+        Tambahkan code berikut pas d bawah code yg nampilin follower
+
+        <div>
+            @foreach($user->followers as $follower)
+                @include('users.partials.avatar2',['size'=>25, 'user'=>$follower])
+            @endforeach
+        </div>
+
+        
+    
+
+
+        
+    
+
+
