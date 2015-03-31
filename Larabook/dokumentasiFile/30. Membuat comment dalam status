@@ -1,0 +1,161 @@
+1.  Bikin Relasi tabelnya (User bisa punya banyak comment)
+
+    a.  Buka User.php -> buat fungsi comments
+
+        public function comments(){
+        
+            return $this->hasMany('Larabook\Statuses\Comment');
+        }
+
+    b.  buka 'statuses/status.php'
+
+        -   Buat fungdi relasi statusnya
+
+            public function comments(){
+                return $this->hasMany('Larabook\Statuses\Comment');
+            }
+
+    c.  Implementasikan opsi 'a' diatas
+        
+        -   buat file class di Larabook/statuses/Comment.php
+
+        -   Biar gak error mass-assignment, maka hrus ada code:
+
+            protected $fillable =['user_id','status_id','body'];
+
+        -   buat fungsi owner()
+
+            public function owner(){
+        
+                return $this->belongsTo('Larabook\Users\User', 'user_id');
+            }
+
+2.  Buka 'routes', setting sebagai berikut
+
+    Route::post('statuses/{id}/comments', [
+        'as' => 'comment_path',
+        'uses' => 'CommentsController@store'
+    ]);
+
+    Keterangan :
+
+        - post = metode kirim data k db
+        - statuses/{id}/comments = link akan mengarahkan ke : 
+                localhost/statuses/id/comments
+                
+        - 'as' => 'comment_path' = alamat inisialisasi link e (biasane 
+                                   d gunakan dalam file blade)
+
+        - 'uses' => 'CommentsController@store'  == alamat controllernya 
+                                                   dg fungsi 'store'
+
+3.  Untuk implementasi menghubungkan antara status dg comment, maka perlu code :
+
+    -   Buka StatusRepository -> fungsi getFeedForUser ->tambahkan code:
+
+            with('comments')
+
+    -   Detail penambahanya :
+    
+        return Status::with('comments')->whereIn('user_id', $userIds)->latest()->get();
+
+    Keterangan:
+    
+    -   Status::with('comments')  
+        di gunakan untuk menghubungkan antara 'tabel Status' dg 'tabel comments'
+
+4.  Menampilkan form untuk posting comment
+
+    a.  Buka 'status.blade'
+        tambahkan code untuk 'form textarea' dan logikanya, untuk detail codenya
+        buka aja file 'status.blade.php' -> bagian bawah
+
+5.  Membuat supaya ketika nulis d comment ->teken enter bisa ada aksi 'post'
+
+    a.  Buka status.blade
+        tambahkan code berikut untuk form posting alamat route nya 
+
+        {{Form::open(['route'=>['comment_path',$status->id], 
+                    'class'=>'comments__create-form'])}}
+
+    b.  Buat script javascrip untuk aksi 'enter'
+
+        -   Buka 'default.blade.php', Tambahkan scrip berikut
+
+            <script>
+               
+                $('.comments__create-form').on('keydown', function (e) {
+                    if (e.keyCode === 13) {
+                        e.preventDefault();
+                        $(this).submit();
+                    }
+                });
+            </script>
+
+
+6.  Genetate class Command dan CommandHandler untuk comment
+
+    a.  buka terminal -> ketik perintah :
+
+        php artisan commander:generate Larabook/Statuses/
+            LeaveCommentOnStatusCommand --properties="user_id, status_id, body"
+
+    b.  Dengan perintah d atas, maka akan ter Generate 2 file :
+        -   File 'LeaveCommentOnStatusCommand.php' dan
+        -   File 'LeaveCommentOnStatusCommandHandler.php'
+
+7.  Buka : LeaveCommentOnStatusCommandHandler
+    
+    a.  Injeksi class UserReposiotry
+
+        private $statusRepo;
+    
+        function __construct(StatusRepository $statusRepo) {
+            $this->statusRepo = $statusRepo;
+        }
+
+    b.  Oveeride fungsi handle, dan isi dg code
+
+        public function handle($command)
+        {
+                $comment = $this->statusRepo->leaveComment(
+                    $command->user_id, 
+                    $command->status_id, 
+                    $command->body);
+        
+            return $comment;
+        }
+
+8.  Implementasikan dari fungsi 'handle' pada option '7.b'
+
+    a.  Buka UserRepository
+
+    b.  Buat fungsi 'leaveComment'
+
+        public function leaveComment($userId, $statusId, $body){
+        
+            $comment = Comment::leave($body, $statusId);
+        
+            User::findOrFail($userId)->comments()->save($comment);
+        
+            return $comment;
+        }
+
+9.  Buka CommentController, buat fungsi 'store' dg code:
+
+    public function store(){
+        //ambil input
+        $input = array_add(Input::get(), 'user_id', Auth::id());
+
+        //eksekusi comment ke dalam status
+        $this->execute(LeaveCommentOnStatusCommand::class, $input);
+        
+        //kembali
+        return Redirect::back();
+    }
+
+        
+
+        
+    
+

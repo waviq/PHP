@@ -10,8 +10,10 @@
             <word>endif</word>
             <word>foreach</word>
             <word>htm</word>
+            <word>texffield</word>
             <word>texfield</word>
             <word>textfield</word>
+            <word>textfields</word>
             <word>textfild</word>
         </spellchecker-wordlist>
     </configuration>

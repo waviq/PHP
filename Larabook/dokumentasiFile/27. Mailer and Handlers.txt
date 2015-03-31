@@ -1,0 +1,71 @@
+1.  Membuat notifikasi email
+
+    a.  Buat file n directory
+
+        Larabook/Handlers/EmailNotifier.php
+
+        Larabook/Mailers/Mailer.php
+
+        Larabook/Mailers/UserMailer.php
+
+    b.  Buka Mailer.php
+
+        -   Buat menjadi abstract class
+
+            abstract class Mailer {
+
+            }
+
+        -   Buat konstruktornya
+
+            use Illuminate\Mail\Mailer as Mail;
+
+            private $mail;
+
+            function __construct(Mail $mail) {
+                $this->mail = $mail;
+            }
+
+        -   Buat fungsi sentTo
+
+            public function sentTo(){
+                
+                $this->mail->queue($view, $data, function ($message) use ($user, $subject) {
+            
+                    $message->to($user->email)->subject($subject);
+                });
+            }
+
+    c.  Buka UserMailer.php
+
+        -   Buat fungsi dan parameter
+
+            public function sendWelcomeMessageTo(User $user){
+        
+                $subject = 'Welcome to TegalBook';
+                $view = 'emails.Registration.confirm';
+                $data = [];
+        
+                return $this->sentTo($user, $subject, $view, $data);
+            }
+
+            Keterangan :
+
+            sentTo = adalah fungsi yang ada d class 'Mailer.php', beserta
+                     parameternya
+            
+            $subject, $view, $data = adalah value dari parameter 'sentTo'
+
+    d.  Buat file dan directory
+
+        Larabook/Providers/EventsServiceProvider.php
+
+    e.  Registrasikan option 'd' ke config/app.php
+
+        -   Tambahkan code berikut di bagian provider
+            
+            'Larabook\Providers\EventsServiceProvider'
+        
+
+
+            

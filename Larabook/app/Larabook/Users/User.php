@@ -93,5 +93,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         if (is_null($user)) return false;
         return $this->username == $user->username;
     }
+    
+    public function comments(){
+        
+        return $this->hasMany('Larabook\Statuses\Comment');
+    }
 
 }
