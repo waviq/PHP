@@ -23,6 +23,8 @@ class BaseController extends Controller {
 
         View::share('penggunaSaatIni', Auth::user());
         View::share('login', Auth::user());
+        
+        
     }
 
 }

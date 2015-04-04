@@ -126,7 +126,9 @@
             return $comment;
         }
 
-8.  Implementasikan dari fungsi 'handle' pada option '7.b'
+
+1
+18.  Implementasikan dari fungsi 'handle' pada option '7.b'
 
     a.  Buka UserRepository
 
