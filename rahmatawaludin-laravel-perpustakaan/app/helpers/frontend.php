@@ -50,7 +50,7 @@ Form::macro('labelUk', function($name, $placeholder) {
 Form::macro('textUk', function($name, $placeholder = null, $icon = null) {
   $html = '';
   if ($icon) {
-    $html .= "<div class=\"uk-form-icon\">
+    $html .= "<div class\=\"uk-form-icon\">
             <i class=\"$icon\"></i>";
   } else {
     $html .= "<div class=\"uk-form-controls\">";

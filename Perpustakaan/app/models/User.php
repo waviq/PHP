@@ -4,11 +4,15 @@ use Illuminate\Auth\UserTrait;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
+use Cartalyst\Sentry\Users\Eloquent\User as SentryUserModel;
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
+class User extends SentryUserModel {
 
 	use UserTrait, RemindableTrait;
 
+    public function books(){
+        return $this->belongsToMany('Book')->withPivot('returned')->withTimestamps();
+    }
 	/**
 	 * The database table used by the model.
 	 *

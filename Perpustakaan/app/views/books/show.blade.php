@@ -1,0 +1,1 @@
+G:\PROJECT\PHP\Perpustakaan\app/views/books/show.blade.php

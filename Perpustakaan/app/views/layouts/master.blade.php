@@ -11,7 +11,7 @@
     <body>
         <div class="uk-container uk-container-center uk-margin-top">
             <nav class="uk-navbar">
-                <a href="#" class="uk-navbar-brand uk-hidden-small">LaraPus</a>
+                <a href="#" class="uk-navbar-brand uk-hidden-small">Perpustakaan Online</a>
                 <ul class="uk-navbar-nav uk-hidden-small">
                     @yield('nav')
                 </ul>
@@ -22,7 +22,7 @@
                     <a href="{{URL::to('logout')}}">Logout</a>
 
                 </div>
-                <div class="uk-navbar-brand uk-navbar-center uk-visible-small">LaraPus</div>
+                <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Perpustakaan Online</div>
             </nav>
             <div class="uk-container-center uk-margin-top">
 
@@ -34,7 +34,8 @@
                     @yield('title')
                     @yield('title-button')
                 </h1>
-                
+
+                @include('layouts.partials.validation')
                 @yield('content')
             </div>
         </div>

@@ -33,6 +33,15 @@ App::after(function ($request, $response)
 |
 */
 
+Route::filter('regularUser', function() {
+    $user = Sentry::getUser();
+    // Cari grup regular
+    $regular = Sentry::findGroupByName('regular');
+    if (!$user->inGroup($regular)) {
+        return Redirect::to('dashboard')->with("errorMessage", "Hanya user regular yang diizinkan untuk mengakses fitur tersebut.");
+    }
+});
+
 Route::filter('auth', function ()
 {
     if (!Sentry::check())

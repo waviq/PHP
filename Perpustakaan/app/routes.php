@@ -12,16 +12,19 @@
  */
 
 
-Route::get('/', 'HomeController@logout');
+Route::get('/', 'GuestController@index');
 
-Route::group(
-    array('before' => 'auth'), function ()
+Route::get('datatable/books/borrow', array('as'=>'datatable.books.borrow','uses'=>'BooksController@borrowDatatable'));
+Route::group(array('before' => 'auth'), function ()
 {
     Route::get('dashboard', 'HomeController@dashboard');
-    Route::group(
-        array('prefix' => 'admin', 'before' => 'admin'), function ()
+    Route::get('books',array('as'=>'member.books','uses'=>'MemberController@books'));
+    Route::get('books/{book}/borrow',array('as'=>'books.borrow','uses'=>'BooksController@borrow'));
+    
+    Route::group(array('prefix' => 'admin', 'before' => 'admin'), function ()
     {
         Route::resource('authors', 'AuthorsController');
+        Route::resource('books','BooksController');
     });
 });
 

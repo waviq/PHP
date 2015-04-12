@@ -4,15 +4,18 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.2.*",
-		"aimeos/ai-monolog": "2015.03.0",
-		"cartalyst/sentry": "v2.1.5",
-		"uikit/uikit": "2.8.0",
-		"way/generators": "2.6",
-		"components/jquery": "2.1.0",
-		"datatables/datatables": "1.10.0",
-		"chumper/datatable": "2.3"
+      "laravel/framework": "4.2",
+      "cartalyst/sentry": "2.1.4",
+      "uikit/uikit": "2.8.*",
+      "components/jquery": "2.1.0",
+      "way/generators": "2.6.*",
+      "datatables/datatables": "1.10.0",
+      "chumper/datatable": "2.3",
+      "ivaynberg/select2": "3.5.0"
 	},
+  "require-dev" : {
+    "way/generators": "2.*"
+  },
 
 	"autoload": {
 		"classmap": [

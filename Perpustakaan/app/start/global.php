@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader
@@ -13,10 +14,12 @@
 
 ClassLoader::addDirectories(array(
 
-	app_path().'/commands',
-	app_path().'/controllers',
-	app_path().'/models',
-	app_path().'/database/seeds',
+    app_path() . '/commands',
+    app_path() . '/controllers',
+    app_path() . '/models',
+    app_path() . '/database/seeds',
+    app_path() . 'exceptions',
+
 
 ));
 
@@ -31,7 +34,7 @@ ClassLoader::addDirectories(array(
 |
 */
 
-Log::useFiles(storage_path().'/logs/laravel.log');
+Log::useFiles(storage_path() . '/logs/laravel.log');
 
 /*
 |--------------------------------------------------------------------------
@@ -46,10 +49,15 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 |
 */
 
-App::error(function(Exception $exception, $code)
+
+
+
+App::error(function (Exception $exception, $code)
 {
-	Log::error($exception);
+    Log::error($exception);
 });
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -62,9 +70,9 @@ App::error(function(Exception $exception, $code)
 |
 */
 
-App::down(function()
+App::down(function ()
 {
-	return Response::make("Be right back!", 503);
+    return Response::make("Be right back!", 503);
 });
 
 /*
@@ -78,4 +86,20 @@ App::down(function()
 |
 */
 
-require app_path().'/filters.php';
+require app_path() . '/filters.php';
+
+/**
+ * Load file macro di file frontend.php
+ */
+require app_path() . '/helpers/frontend.php';
+
+
+function borrow(){
+    
+    $user = Sentry::getUser();
+    // cek apakah buku ini sedang dipinjam oleh user
+    if( $user->books()->wherePivot('book_id',$this->id)->wherePivot('returned', 0)->count() > 0 ) {
+        throw new BookAlreadyBorrowedException("Buku $this->title sedang Anda pinjam.");
+    }
+    return $this->users()->attach($user);
+}
