@@ -1,0 +1,72 @@
+Cara untuk menampilkan detail dari sebuah Link yg ngambil file dari Database
+1.  Buat model nya (liat catatan no 5)
+
+
+2.  Buat File Controllernya (liat catatan no 5)
+    a.  Buat fungsi show dg parameter 'id' dari DB atau bebas nama fungsi apapun,
+        yg penting isinya untuk nampilin data dari database berdasarkan 'id'
+
+            public function show($id){
+
+            }
+    b.  Buat variabel penampung yang isinya memanggil model -> mencari 'id' di database
+
+            $artikel = Artikel::find($id);
+
+    c.  Tampilkan ke blade/view dengan fungsi array penampung (compact)
+
+            return view('artikel.show', compact('artikel'));
+    d.  Code lengkap fungsi show nya
+
+         public function show($id){
+                $artikel = Artikel::findOrFail($id);
+                return view('artikel.show', compact('artikel'));
+         }
+
+3.  Cara Panggil di file blade/view nya
+
+    a.  Buat file shoow blade dengan title ngambil dari DB
+
+            <h1>{{$artikel->title}}</h1>
+
+    b.  Tampilan detail dari Link yg nantinya akan d eksekusi di file index.blade or artikel.blade
+
+        <article>
+            {{$artikel->body}}
+        </article>
+
+    c.  Buat Link nya yg mengarahkan ke file show.blade (option a dan b)
+
+            <a href="/artikel/{{$artikels->id}}">{{$artikels->title}}</a>
+
+        Note:
+            -   <a href="/artikel/{{$artikels->id}}">
+                Link untuk mengarahkan dan memanggil 'id' dari database yg akan di tampilkan
+
+            -   {{$artikels->title}}
+                Title yg di ambil dari database, ini sudah berupa link, karna ada codingan d atas
+
+
+    NOTE PENTING:
+
+    Untuk membuat Link guna memanggil 'id' dari database, selain cara di atas (option c) juga
+    ada beberapa cara lagi yang hasilnya sama persis, di antaranya dg cara :
+
+    1.  Dengan memanggil langsung file Controllernya
+
+        <a href="{{ action('ArtikelController@show', [$artikel->id]) }}">
+
+    2.  Menggunakan fungsi URL
+
+        <a href="{{ url('/artikel', $artikel->id) }}">
+
+    3.  Dengan fungsi Route path (di file routes buat dolo route path n uses nya)
+
+        <a href="{{ route('artikel_path') }}" >
+
+
+
+
+
+
+

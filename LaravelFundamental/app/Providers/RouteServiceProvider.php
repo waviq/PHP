@@ -24,6 +24,8 @@ class RouteServiceProvider extends ServiceProvider {
 	{
 		parent::boot($router);
 
+        //untuk ngilangin find($id)
+        $router->model('artikel','App\Artikel');
 		//
 	}
 

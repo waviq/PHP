@@ -1,0 +1,57 @@
+1.  Membuat controller otomatis dg commandLine
+    a.  'php artisan make:controller NamaController' ->generate lengkap fungsi
+    b.  'php artisan make:controller NamaController --plain' ->generate tanpa fungsi
+
+    Bantuan Help via artisan command
+    a.  'php artisan help NamaFungsiBantuan'
+        contoh : 'php artisan help make:controller'
+
+    JENIS - JENIS PASING DATA KE VIEW
+
+    1.  Dengan membuat variabel dan memanggil variabelnya d blade
+        a.  di file Controllernya
+            $namaVariabel = 'Waviq Subhi';
+
+            return view('folder.namaFileBlade')->with('VarForFileBlade', $namaVariabe');
+
+        b.  Cara panggil di File blade nya
+
+            Nama saya itu : {{$VarForFileBlade}}
+
+        2.  Dengan membuat Array penampungnya
+            a.  di file Controllernya:
+                return view('folder.namaFileBlade')->with([
+                    'namaDepan' -> 'Waviq',
+                    'namaBelakang' -> 'Subhi'
+                ]);
+
+            b.  Cara panggil di file bladenya
+
+                Nama saya itu : {{$namaDepan}} {{$namaBelakang}}
+
+        3.  Dengan membuat variabel penampungnya/variabel array
+            a.  di file Controllernya:
+                $namaVariabel = [];
+                $namaVariabel = ['namaDepan'] = 'Waviq';
+                $namaVariabel = ['namaBelakang'] = 'Subhi';
+
+                return view('folder.namaFileBlade', $namaVariabel);
+
+            b.  Cara panggil di file blade nya :
+
+                Nama saya itu : {{$namaDepan}} {{$namaBelakang}}
+
+        3.  Dengan membuat nama variabelnya dan menggunakan array untuk menampung variabelnya
+            a.  di File Controllernya:
+                $namaDepan = 'Waviq';
+                $namaBelakang = 'Subhi';
+
+                return view('folder.namaFileBlade', compact('namaDepan', 'namaBelakang'));
+
+            b.  Cara panggil di file blade nya :
+
+                Nama Saya itu : {{$namaDepan}} {{$namaBelakang}}
+
+
+
+

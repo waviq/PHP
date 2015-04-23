@@ -1,0 +1,45 @@
+Pengertian Route Model Binding
+Cara mudah untuk melakukan injeksi ke halaman routes kita,
+
+Cara membuat route model binding:
+
+1.  Registerkan Model kita ke fungsi 'boot' pada class 'RouteServiceProvider'
+    yg letaknya di directory (app/Providers/RouteServiceProvider)
+
+    Registerkan Model:
+
+        $route->model('linkRoute','LetakDirectory');
+
+        $route->('artikel','App\Artikel');
+
+2.  Implementasikan pada file Controllernya (ArtikelController) atau bisa juga langsung
+    implementasikan pada file routesnya (Jika gak ada fungsi di controller)
+
+    -   contoh Controller tanpa Model Binding
+
+            public function show($id){
+                $artikel = Artikel::findOrFail($id);
+                return view('artikel.show', compact('artikel'));
+            }
+
+    -   Contoh dengan Model Binding maka menjadi
+
+            public function show(Artikel $artikel){
+                return view('artikel.show', compact('artikel'));
+            }
+
+        NOTE :  a.  Kenapa dg sangat simpel masih sama hasilnya?
+                    jawab:
+                    karna kita sudah melakukan fungsi injeksi di file routesnya, file route show pada
+                    RESTful ressource sudah di arahkan ke (artikel/{$id}) pada database kita
+
+                b.  Kalo sudah menggunakan route model binding, maka fungsi Controller yang lain wajib
+                    mengikuti menggunakan model binding, kalo tidak maka akan error,
+
+                    pada contoh implementasi kita di file ArtikelController, semua fungsi yg mengandung
+                    code:
+                        Artikel::findOrFail($id)
+
+                        di ubah semua dg model binding sesuai contoh d atas
+
+

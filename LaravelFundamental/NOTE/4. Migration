@@ -1,0 +1,42 @@
+Migration di Laravel
+1.  Instal migration
+    a.  Perintah untuk meng create tabel migrasi, fungsi untuk merecord
+        apasaja yg terjadi d tabel database
+
+            php artisan migrate:install
+
+2.  Buat tabel migration dan buat tabel k DB
+    a.  Perintah untuk membuat tabel migrations class, nantinya akan di simpan di
+        dalam dorectory: 'database/migrations/classMigration.php'
+
+            php artisan make:migration create_namaTabel_table --create="namaTabel"
+
+    b.  Buka file dalam directory: 'database/migrations'
+
+        -   public function up()
+            digunakan untuk mengeksekusi kolom apa aja yang akan d buat d tabel
+        -   public function down()
+            untuk menghapus tabel yg telah d buat, jdi ketika fungsi d jalankan
+            otomatis akan menghapus yang lama n meng create fungsi up,
+            jadi gak terjaid duplikasi tabel
+
+    c.  Untuk membuat tabel ke DB, lakukan dg perintah :
+
+            php artisan migrate
+
+        Dengan perintah d atas, maka d Database kita akan ada tabel baru,
+        dan kolom yang ada isinya sesuai 'fungsi up' pada file migration
+
+3.  Perintah Menambah kolom baru, di tabel yang sudah ada
+
+        php artisan make:migration add_KolomBaru_to_artikel_table --table="namaTabel"
+
+    Dengan perintah di atas akan ter create file d directory: 'database/migrations'
+
+    a.  function up() -> pada edit table untuk add kolom baru
+        Isi format kolom baru dalam 'fungsi up' tersebut
+    b.  function down()-> berisi kolom yang d hapus
+        kolom lama perlu di hapus pada saat fungsi rollback
+
+
+

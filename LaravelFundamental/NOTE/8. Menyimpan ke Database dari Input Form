@@ -1,0 +1,38 @@
+Cara Untuk Menyimpan Inputan dari Form yang d buat:
+
+1.  Buat route baru untuk mengirim (method POST) file inputan yg kita buat
+
+        Route::post('artikel','ArtikelController@store');
+
+        NOTE: a. Mengapa pake POST? karena kita mengirim data ke database
+              b. Jadi setelah klik tombol submit, file inputan akan dikirim ke database,
+                 yang di setting semua di fungsi 'store' pada 'ArtikelController@store'
+
+2.  Buat fungsi Store (default dari RESTful) atau nama fungsi lainya
+
+    a.  Rekam hasil inputan yang akan d masukan ke database
+
+            $input = Request::all();
+
+        Note: - all() = berfungsi mengampil semua inputan yang ada pada form(form blade)
+              - get('namaKolomForm1,','kolomForm2','dll')
+                berfungsi untuk mengambil beberapa kolom inputan pada form yang ada
+
+    b.  Save/simpan ke database hasil dari rekam inputan form yang d buat
+
+            Artikel::create($input);
+
+            Note: fungsi di atas untuk menyimpan inputan ke dalam database
+
+    c.  setelah berhasil menyimpan, arahkan Link ke route halaman index (artikel)
+
+            return Redirrect('artikel');
+
+3.  Arahkan File Blade Form nya, agar kita klik submit maka akan mengarahkan ke Route POST
+    sesuai fungsi Controller yang telah di tentukan,
+
+        {!! Form::open(['url'=>'artikel']) !!}
+
+    NOTE: a. Pada ['url'=>'artikel'] =  mengarahkan routes-> Route::post('artikel','ArtikelController@store');
+          b. Fungsi mengarahkan link route bisa menggunakan beberapa fungsi, selain opsi 'a'
+             Beberapa fungsi lainya bisa di liat di catatan no 6

@@ -1,0 +1,53 @@
+Membuat Form Validasi
+
+    Analogi : - Jadi validasi di lakukan ketika tombol submit di klik
+              - Setelah tombol submit d klik maka akan d kirim ke fungsi 'store' pada 'controller'
+
+1.  Buat Request file, yang fungsinya nantinya akan berisi validasi pada form
+    a.  Untuk membuat request file, bisa dg perintah
+
+            php artisan make:request NamaFileRequest
+
+        Nantinya file request tersebut akan di save di directory : App/Http/Request
+
+    b.  Buka isi file Request yang baru saja d bikin (ArtikelRequest)
+        -   Pada fungsi 'authorize'
+            ubah dari false -> menjadi true
+
+        -   Pada fungsi 'rules', berisi rule/aturan validasi pada fungsi ini
+            contoh:
+
+                'title' => 'required|min:5',
+                'penulis' => 'required|min:3',
+                'body' => 'required|min:5',
+
+            NOTE: Code di atas berisi validasi form:
+                  - form tidak boleh kosong (required)
+                  - form minimal 5 karakter(pada title)
+
+2.  Masukan class request yang baru aja di bikin ke dalam  fungsi 'store' Controller
+    (class ArtikelController) + beri parameter variabelnya (bebas tapi WAJIB ada)
+    -   contoh:
+        public function store(ArtikelRequest $validasi){
+
+        }
+
+3.  Tangkap pesan error yang di munculkan jika validasi tidak sesuai, penangkapan pesan eror
+    ini di masukan dalam file blade (exp: create.blade)
+
+        @if($errors->any())
+            <ul class="alert alert-danger">
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        @endif
+
+        KETERANGAN :
+
+        a.  @if($errors->any()) = Jika ada pesan error, apapun errornya
+        b.  <ul class="alert alert-danger"> = class bootstrap danger nampilin eror
+        c.  @foreach($errors->all() as $error) = buat perulangan jika ada eror validasi apapun, maka
+        d.  <li>{{$error}}</li> = tampilkan pesan error jika ditemukan eror validasi
+
+

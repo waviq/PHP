@@ -1,0 +1,60 @@
+Cara menampilkan data di database semua view halaman web
+
+1.  Buat model sesuai nama tabelnya
+
+    a   Perintah untuk membuat model
+            php artisan make:model artikel
+
+        Maka akan ter generate file model 'artikel.php' dalam directory 'app/artikel.php'
+
+    b.  Inisialisasi nama tabelnya dalam file model
+        -   Buka file app/artikel/php
+        -   buat variabel sesuai nama tabelnya
+                protected $table = 'artikel';
+            Note: penulisanya wajib menggunakan variabel '$table', fungsinya untuk
+                  inisialisasi nama tabel sesuai di database
+
+    b.  Buat sebuah variabel agar saat mengisi tabel tidak error massAssigment :
+
+            protected $fillable = ['namaKolom1,'namaKolom2','dll'];
+
+2.  Buat file Controllernya
+
+    a.  Perintah untuk membuat file Controller
+            php artisan make:Controller ArtikelController --plain
+
+        Note: (--plain) digunakan untuk inisalisasi gak auto generate semua fungsi default
+              Jika tanpa 'plain' maka akan otomatis dalam file controller akan ada banyak fungsi
+
+    b.  Buat fungsi index dalam file ArtikelController
+    c.  Buat variabel penampung -> Panggil modelnya -> select file isi Database nya
+
+            $artikel = Artikel::all();
+
+        Note: like perintah : select * from artikel;
+    d.  Tampilkan ke file blade/view nya :
+
+            return view('artikel.artikel', compact('artikel'));
+
+    e.  Code lengkap fungsi index nya
+
+        public function index(){
+            $artikel = Artikel::all();
+            return view('artikel.artikel',compact('artikel'));
+        }
+
+3.  Buat file blade/view nya
+
+    a.  Buat file blade nya sesuai directory di controllernya
+    b.  Cara panggil untuk file controller nya agar menampilkan isi database sesuai controller
+
+        @foreach($artikel as $artikels)
+            <h2>{{$artikels->title}}</h2>
+            <div class="body">{{$artikels->body}}</div>
+        @endforeach
+
+        Note: code di atas untuk menampilkan  judul buku n isi buka dri Database
+
+
+
+

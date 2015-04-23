@@ -1,0 +1,53 @@
+1.  Pengertian Midleware
+    a.  Middleware kaya semacam pembungkus sebuah aplikasi yang di dalamnya MENGATUR 'request'
+        dan 'respon' dalam aplikasi kita tersebut
+    b.  Jadi middleware bisa dikatakatan kaya yang mengatur request dan respon dalam aplikasi kita,
+        setiap request dan respon tersebut bisa kita atur RULE nya mau bagaimana
+    c.  midleware itu kaya semacam fileter atau saringan untuk membatasi rule untuk membatasi sebuah
+        halaman bisa di akses untuk rule yang telah di tentukan
+
+2.  Untuk Mengerti menggunakan Midleware, kita mesti tau :
+
+    a.  Route midleware
+        Route midleware terletak di: http/Kernel.php
+
+        Route midleware terbagi menjadi 2 Array,
+        -   $middleware
+            Menjalankan middleware di setiap request
+
+        -   $routeMiddleware
+            Menjalankan middleware hanya di routes atau hanya via file routes untuk memanggilnya
+
+    b.  Create midleware
+            php artisan make:middleware namaMidleware
+
+        akan tersimpan di: app/Http/Midleware/namaMidleware
+
+
+3.  Step Membuat middlleware - menggunakan middleware
+
+    a.  Buat file middlewarenya
+
+            php artisan make:middleware namaMiddleware
+            php artisan make:middleware MyMiddleware
+
+    b.  Registerkan file middleware kita yg d buat ke dalam file 'Kernel.php'
+
+        -   Registerkan Middleware, Jika middleware jalan di setiap request
+
+                App\Http\Middleware\MyMiddleware
+
+        -   Registerkan Middleware, Jika middleware hanya akan di jalankan di spesifik routes
+            Format penulisanya = 'InisialKey => 'Letak file Middleware nya di simpan'
+
+                'xyz' => 'App\Http\Middleware\MyMiddleware'
+
+                panggil di file routes nya:
+
+                Route::get('contoh', ['middleware' => 'xyz', function(){
+                    return 'Hanya contoh';
+                }])
+
+
+
+

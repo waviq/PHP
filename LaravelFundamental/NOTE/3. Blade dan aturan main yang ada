@@ -1,0 +1,65 @@
+Macam-macem if Statements di blade file
+1.  @if dan @endif
+    Jika kondisi bernilai 'true' atau 'benar', maka akan di eksekusi,
+    namun jika tidak maka akan melakukan sesuatu yg lain
+        @if(kondisi)
+            Lakukan A
+        @else
+            Lakukan B
+        @endif
+
+2.  @unless dan @edunless (! @if dan endif)
+    Jika kondisi bernilai 'true' Jika kondisine salah atau tidak
+    sesuai dengan statement
+        @unless(cekStatusLogin)
+            Anda kudu login dolo
+        @endunless
+
+Macam-macam Loops di blade file
+1.  @for dan @endfor
+    @for($i = 0; $i<10; $i++)
+        urutan nomor ke : {{$i}}
+    @endfor
+
+    Keterangan
+    a.  $i=0 -> inisialisasi kondisi
+    b.  $i<10 -> Kondisinya (default: true)
+    c.  $i++ -> selama kondisi true, maka akan
+                melakukan sesuatu sampai bernilai false
+
+ 2. @foreach dan @endforeach
+    @foreach($namaDepan as $jenengNgarep)
+        <p>Nama-nama usernya {{$jenengNgarep}}
+    @endforeach
+
+ 3. @forelse
+
+    @forelse($users as $user)
+        <li>{{ $user->name }}</li>
+    @empty
+        <p>No users</p>
+    @endforelse
+
+ 4. @while
+
+    @while (true)
+        <p>I'm looping forever.</p>
+    @endwhile
+
+
+
+
+
+Aturan main menggunakan kondisional di dalam file blade
+
+1.  Penulisan kondisional dalam file blade, wajib d tulis dengan
+    inisialisasi '@' atau (a keong)
+1.  Setiap menggunakan kondisi '@if' dan wajib di akhiri dengan '@endif'
+
+    @if($namaDepan == 'Waviq Subhi')
+        <hi>Hi Nama Saya Waviq Subhi</h1>
+    @else
+        <h1>Hi Saya gak punya nama</h1>
+    @endif
+
+2.  Dalam

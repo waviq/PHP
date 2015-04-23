@@ -1,0 +1,17 @@
+1. Dalam Route di laravel, beberapa fungsi penting dalam Controller dapat di handle
+   dengan RESTful resource
+
+2.  Method dan handle yang dapat di lakukan dengan Resource Controller
+    Contoh : ArtikelController
+
+    Method          URL                     ACTION             Route Name           Contoh Pakai
+
+    GET             artikel                 index              artikel.index        halaman utama
+    GET             artikel/create          create             artiel.create        ngisi form
+    GET             artikel/{idArtikel}     show               artikel.show         nampilin detail link
+    GET             artikel/{id}/edit       edit               artikel.edit         nampilin ID mana yg mau d edit
+    POST            artikel                 store              artikel.store        Kirim Data ke Controller -> DB
+    DELETE          artikel/{id}            destroy            artikel.destroy      Hapus, dg PK(id) yg d hapus
+    PATCH           artikel/{id}            update             artikel.update       Save hasil update action 'edit'
+    PUT             artikel/{id}            update             artikel.update
+

@@ -1,0 +1,34 @@
+1.  Code input form untuk nampilin date javascript bootstrap (di Fila blade)
+
+    {!! Form::input('date','published_at',date('Y-m-d'),['class'=>'form-control']) !!}
+
+2.  Setting di File Model nya
+    a.  Buat fungsi SetNamaKolomAttribut di file model (Artikel) beserta parameter variabelnya
+
+            public function setPublishedAtAttribute($data){
+
+            }
+
+        NOTE: - Pembuatan nama fungsi formatnya harus set + NamaKolom + Attribut + (parameter)
+                Jika tidak sesuai format maka akan error (PENTING !!!!)
+
+    b.  Buat injeksinya
+
+            $this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d', $data);
+
+        NOTE: - $this =  nama class modelnya (artikel)
+              - attributes = nama variabel pada kelas Model (karna Kelas Artikel extends Model)
+              - published_at = nama kolom yg punya wakti date tame,
+              - Carbon::createFromFormat('Y-m-d', $data)
+                adalah import kelas Carbon yang berisi rule tentang date n time, beserta formatnya,
+                untuk lebih jelas bisa di buka saja kelas Carbon
+
+3.  Masukan nama kolom (published_at) pada ($protected $fillable) di kelas model (artikel) agar gak erorr massasigmen
+
+4.  Dengan step di atas maka otomatis akan menyimpan format tanggal dan waktu pada form publis artikel di terbitkan
+
+
+
+
+
+

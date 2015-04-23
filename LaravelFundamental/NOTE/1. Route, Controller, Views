@@ -1,0 +1,5 @@
+New Laravel 5
+
+1.  Letak routes.php ada di -> app/Http/routes.php
+2.  Letak Controller ada di -> app/Http/Controller
+3.  Letak Views folder ada di ->resource/views

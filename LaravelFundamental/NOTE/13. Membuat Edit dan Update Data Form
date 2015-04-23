@@ -1,0 +1,70 @@
+1.  Untuk file Controllernya
+
+    a.  Buat fungsi 'edit' dg parameter 'id' yang mau di edit
+        -  Cari id yang mau di edit, a
+        -  tampilkan ke halaman view file edit.blade
+                view('artikel.edit')
+        -  ketika sukses, tampilkan hasilnya ke halaman utama
+                compact('artikel')
+        -  code lengkapnya
+
+            public function edit($id){
+                $artikel = Artikel::findOrFail($id);
+                return view('artikel.edit', compact('artikel'));
+            }
+
+    b.  Buat fungsi 'update' dengan parameter '$id' dan parameter 'ModelRequest $validasi'
+
+            public function update($id, ArtikelRequest $validasi){
+                $artikel = Artikel::findOrFail($id);
+                $artikel->update($validasi->all());
+                return Redirect('artikel');
+            }
+
+        KETERANGAN
+
+        -   $id = primaryKey (biasane pke id) yang di ambil untuk data yg mau d update
+        -   ArtikelRequest = ambil dari class ArtikelRequest yang isinya validasi
+        -   $validasi = variabel inisialisasi (bebas nama variabelnya)
+        -   $artikel = variabel penampung yg nantinya bisa d pake di file controller dan file blade
+        -   Artikel = Class model tabel
+        -   findOrFail  = fungsi untuk mencari nama kolom di database (exp: id)
+        -   update  = fungsi untuk update data
+        -   $validasi->all() = penanda bahwa semua form harus di validasi penulisanya
+        -   Redirect('artikel') = Jika sukses maka akan diarahkan ke halaman utama/index (exp: artikel)
+
+
+
+2.  Untuk File view blade nya (untuk nampilin hasil dari controller)
+
+    a.  Buat file blade edit
+        -   berisi form untuk edit data dari database
+        -   formnya ngambil saja dari file pas input/create form
+    b.  Buat method agar pada saat klik tombol submit (update) maka akan mengirim ke fungsi controller
+        yang sudah d buat di atas (fungsi update)
+
+            {!! Form::open(['method' => 'PATCH',
+                            'action' => ['ArtikelController@update', $artikel->id]]) !!}
+
+        Keterangan:
+
+        -   'method' => 'PATCH' = method yang di pakai untuk update suatu data (dri resource)
+        -   'action' => ['ArtikelController@update' = aksi eksekusi untuk mengirim data ke controller
+        -   $artikel->id =  parsing ke 'id' yang di update
+
+        NOTE: ada banyak cara untuk melakukan url ke Controller, cek d catatan sebelom e ada
+
+    c.  Buat agar form yg kita edit dapat nampilin data lama kita yg tersimpan di database
+        -   Caranya dengan menggganti dari Form:open -> Form:model
+        -   memberi parsing variabel model yang kita buat ($artikel)
+
+            Code lengkapnya
+
+            {!! Form::open(['method' => 'PATCH',
+                                        'action' => ['ArtikelController@update', $artikel->id]]) !!}
+
+            DI UBAH MENJADI CODE :
+
+            {!! Form::model($artikel,['method' => 'PATCH',
+                                      'action' => ['ArtikelController@update', $artikel->id]]) !!}
+

@@ -20,13 +20,8 @@ class AuthController extends Controller {
 
 	use AuthenticatesAndRegistersUsers;
 
-	/**
-	 * Create a new authentication controller instance.
-	 *
-	 * @param  \Illuminate\Contracts\Auth\Guard  $auth
-	 * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
-	 * @return void
-	 */
+    protected $redirectTo = '/artikel';
+
 	public function __construct(Guard $auth, Registrar $registrar)
 	{
 		$this->auth = $auth;

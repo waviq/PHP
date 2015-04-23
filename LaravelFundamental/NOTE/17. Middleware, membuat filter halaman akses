@@ -1,0 +1,38 @@
+Kasus: - Kita akan membatasi halaman yang bisa di akses antara user tamu (guest) dan user
+         yang sudah login,
+
+1.  Cara membuat halaman, agar yang dapat di akses hanya halaman index atau halaman utama,
+    namun ketika user sudah login, maka akan semua halaman akan bisa di akses
+
+    a.  Buat construktor middleware pada halaman Controller (ArtikelController)
+
+            public function __construct()
+            {
+                $this->middleware('auth',['except' => 'index']);
+            }
+
+        KETERANGAN :
+        -   public function __construct() = standar memnuat konstruktor
+        -   $this = class ArtikelController
+        -   middleware = fungsi yang ada dalam class Controller (karna class ArtikelController itu
+                         mewarisi atau extends dari class Controller)
+        -   auth =  variabel dalam class 'Authenticate'(Http/Middleware/Authenticate) dan variabel tersebut
+                    sudah di registrasi dalam route Middleware pada class 'Kernel' (Http/Kernel.php)
+        -   except (kecuali) = fungsi pada class 'Request' di gunakan sebagai kata kunci untuk membatasi
+                               semua halaman agar tidak bisa di akses KECUALI fungsi Controller yang di deklarasikan
+                               untuk boleh di akses
+        -   index = halaman index atau halaman utama, jdi klo di gabungin dg fungsi 'except' artine
+                    hanya halaman index yang boleh di akses ketika sebagai tamu (guest) pada halaman tersebut
+
+2.  Cara membuat halaman agar hanya halaman tertentu saja yang dapat di akses
+
+    a.  Caranya sama persis seperti no 1 (membuat konstruktor), perbedaanya menggunakan fungsi 'only'
+
+            public function __construct()
+            {
+                $this->middleware('auth',['only' => 'create']);
+            }
+
+        NOTE:
+        Jadi dengan menggunakan fungsi 'only' maka hanya halaman create atau fungsi
+        controller create saja yang d block untuk gak bisa di akses

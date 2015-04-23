@@ -1,0 +1,15 @@
+1.  Membuat urutan tampilan posting/data dari yang paling baru - terlama
+
+    a.  Dengan menggunakan fungsi 'latest'
+        pada contoh artikelController, maka akan diletakan di fungsi index nya
+
+            $artikel = Artikel::latest('published_at')->get();
+
+            Note: - Default colom diurutkan berdasarkan kolom = create_at
+                  - bisa juga di ganti berdasarkan kolom terserah kita, pada kasus kita
+                    order berdasarkan kolom 'published_at'
+
+2.  Membuat urutan tampilan posting/data dari yang terlama - paling baru
+    b.  Dengan menggunakan fungsi 'oldest'
+
+        Cara Penggunaanya sama persis dengan option 'a'

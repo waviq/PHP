@@ -1,0 +1,61 @@
+Analogi :
+User dapat membuat banyak artikel, namun artikel judul artikel yang sama hanya
+dapat di tulis oleh satu user (one to many)
+
+Cara Membuat Reationship User bisa memiliki banyak Artikel
+1.  Setting di class masing - masing Modelnya dolo
+    a.  Buka Model tabel User
+        -   Buat fungsi untuk menandakan bahwa model 'User' memiliki 'Many' relasi dengan model 'Artikel'
+
+                public function Artikel(){
+                    return $this->hasMany('App\Artikel');
+                }
+
+            KETERANGAN
+
+            function Artikel = Nama fungsi, nama bisa bebas, tp untuk mengingat pakai nama Modelnya yg berhubungan
+            $this = menandakan class model User
+            hasMany('App\Artikel') = bahwa class model user memiliki hubungan relasi 'many' dengan model Artikel
+
+    b.  Buka Model tabel Artikel
+        -   Buat fungsi untuk menandakan bahwa model 'Artikel' punya hubungan dengan Model 'User'
+
+                public function User(){
+                    return $this->belongsTo('App\User');
+                }
+
+            Keterangan:
+
+            function User = Nama fungsi, nama bisa bebas, tp untuk mengingat pakai nama Modelnya yg berhubungan
+            $this = Menandakan class model Artikel
+            belongsTo('App\User') =  bahwa class model 'Artikel' itu berhugungan dan MILIKNYA model 'User'
+
+2.  Setting di file Migrasi nya
+    Step di atas (no 1) tidak bisa membuat relasi di tabel Databasenya (hanya untuk berguna di coodingan saja),
+    Agar di tabel dalam Database bisa punya relasi, maka perlu di setting dolo.
+
+    Caranya : Buka File Migrasi Artikel tabel
+    a.  Buat kolom baru, yang nantinya akan digunakan sebagai foreignKey
+
+            $table->integer('user_id')->unsigned();
+
+    b.  Buat foreign Key nya
+
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
+
+        KETERANGAN:
+
+        -   foreign('user_id') = penanda bahwa kolom 'user_id' sebagai foreign Key
+        -   references('id') = penanda bahwa foreign Key ngambil dari kolom 'id' di tabel 'users'
+        -   on('users') = penanda bahwa foreign Key ngambil reference dari tabel 'users'
+        -   onDelete('cascade') = penanda bahwa ketika account users 'id' di hapus, maka semua
+                                  postingan pada tabel Artikel akan ikut ke hapus
+
+
+
+
+
+

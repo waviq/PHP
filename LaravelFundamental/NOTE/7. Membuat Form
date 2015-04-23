@@ -1,0 +1,42 @@
+Untuk Membuat Form di Laravel, Caranya :
+
+1.  Instal new Package untuk Form Builder, dengan perintah
+
+        composer require illuminate/html
+
+2.  Daftarkan/Registerkan package FormBuilder ke dalam 'config/app.php'
+
+    a.  Regis pada 'providers':
+
+            'Illuminate\Html\HtmlServiceProvider',
+
+    b.  Regis pada 'aliases':
+
+            'Form'      => 'Illuminate\Html\FormFacade',
+            'Html'      => 'Illuminate\Html\HtmlFacade',
+
+    Note: dengan langkah 1 dan 2, maka kita akan bisa menulis Form builder yg ada
+          d laravel 4 (d laravel 5 d hapus fungsi ini)
+
+4.  Dengan menambahkan package di atas, kita bisa menuliskan Form builder di file blade kita
+5.  Pembuatan Form Builder di laravel 5, berbeda dengan pas yang ada di laravel 4
+    contoh:
+
+    a.  Laravel 4, untuk open-close form
+
+        {{Form::open()}}
+
+        {{Form::close()}}
+
+    b.  Laravel 5, untuk ope-close form
+
+        {!! Form::open() !!}
+
+        {!! Form::close() !!}
+
+    Jari di laravel 5, untuk membuat form, menghapus tanda sepasang'{}' dan di gantikan tanda '!!' di awal
+    dan di akhir '{}'
+
+
+
+

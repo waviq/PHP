@@ -1,0 +1,25 @@
+Analogi:
+Ketika tabel users dan artikel berhubungan one to many atau
+satu user bisa membuat banyak artikel, brarti ketika kita menyimpan
+artikel postingan, otomatis kita akan meng update juga keterangan
+bahwa 'id' dari tabel users yg di gunakan sebagai Foregin Key (user_id)
+reference dari tabel users, wajib harus ikut ter update
+
+Caranya
+1.  mempraktekan step pada note 15 (liat catatan dokumen)
+2.  Maka kita harus mengubah isi dari fungsi 'store' pada ArtikelController
+    (fungsi untuk menyimpan artikel k DB),
+    sebagai berikut:
+
+        $artikel = new Artikel($request->all());
+        Auth::user()->artikel()->save($artikel);//save ke tabel users n artikel
+
+    KETERANGAN:
+
+    $artikel = variabel penampung saja (nama bisa bebas)
+    new Artikel = memanggil model artikel (tabel artikel)
+    $request->all() =  me record semua form inputan yang ada (nantinya yg akan d save k DB)
+    Auth:: = fungsi untuk autentifikasi
+    user()->artikel() = nantinya akan di simpan ke tabel user dan tabel artikel
+    save($artikel) = menyimpan semua request inputan dalam form
+
