@@ -22,6 +22,12 @@
     {!! Form::input('date','published_at',date('Y-m-d'),['class'=>'form-control']) !!}
 </div>
 
+<!--Kategori form input-->
+<div class="form-group">
+    {!! Form::label('kategori','Kategori:') !!}
+    {!! Form::select('kategori[]', $kategori, null,['class'=>'form-control','multiple']) !!}
+</div>
+
 <!--Add Artikel Button Submit-->
 <div class="form-group">
     {!! Form::submit($namaTombol, ['class' =>'btn btn-primary form-control']) !!}

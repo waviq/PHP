@@ -1,0 +1,43 @@
+Menggunakan Gulp untuk CSS di bagi 2 macam
+1.  Dengan manggunakan compile file CSS type 'less'
+    a.  Compile Less single
+
+        elixir(function(mix) {
+            mix.less("app.less");
+        });
+
+        Code di atas artinya akan meng create file app.css di public/css/app.css
+    b.  Compile multiple Less File
+
+        elixir(function(mix) {
+            mix.less([
+                'app.less',
+                'appLagi.less'
+            ]);
+        });
+
+        Code di atas artinya akan meng create file : 'appLagi' dan 'app.css' di directory: app.css di public/css/
+
+        NOTE: Semua mapping sebelom di compile WAJIB di buatkan filenya di directory resource/assets/less/app.less
+              Jika tidak d buatkan file sesuai mapping nya, maka akan error saat melakukan compile
+
+2.  Dengan menggunakan compile file CSS type 'scss'
+
+    Konsepnya sama dengan less (opsi a), beda di penulisan type file nya saja
+
+Menggunakan Gulp untuk JS atau javascript
+1.  Menggunakan compile dengan type file 'coffee'
+
+        elixir(function(mix) {
+            mix.coffee();
+        });
+
+    NOTE:
+    a.  Buatkan juga file bertipe 'coffee' di directory : resources/assets/coffee
+        contoh file: coba.coffee
+
+    b.  Makan akan ter generate file 'coba.js' di directory : public/js/coba.js
+
+LEBIH LENGKAP BACA DOKUMENTASI TENTANG ELIXIR
+
+

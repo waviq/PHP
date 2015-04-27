@@ -1,0 +1,41 @@
+Elixir Gulp dapat memanage banyaknya file CSS dan JS di file public dalam SATU directory di public nya
+
+1.  Untuk mencampur beberapa file CSS dalam 1 file
+    a.  Dengan code : styles
+
+            var elixir = require('laravel-elixir');
+            elixir(function(kombinasi)){
+                kombinasi.styles([
+                    'vendor/normal.css',
+                    'app.css'
+                ], 'public/output/final.css', 'public/css');
+            }
+
+
+        KETERANGAN:
+        -   elixir = nama variabel saja, bisa bebas namanya (Namun, WAJIB imlementasi dri: laravel-elixir)
+        -   require('laravel-elixir') = meng import fungsi laravel elixir
+        -   kombinasi = nama fungsi
+        -   vendor/normal.css =  salah satu nama file CSS yang akan di gabungin
+        -   app.css = salah satu nama css yang akan di gabungin
+        -   public/output/final.css = file output nantinya dari hasil penggabungan (wajib di buatkan dahulu file output e)
+        -   'public/css =  directory penyimpanan file css d public
+
+2.  Untuk mencampur beberapa file Javascript dalam 1 file
+    a.  Dengan code : scripts
+
+        campur.scripts([
+            'vendor/jquery.js',
+            'main.js',
+            'contoh.js'
+        ],'public/output/script.js','public/js');
+
+        KETERANGAN:
+        Keterangan penggunaan kurang lebih sama kaya keterangan di atas (mencampur file CSS)
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+Cara membuat tampilan UI untuk kolom Kategori dari relasi Many to Many (pada note 23)
+
+1.  Buat form nya (form create)
+    a.  Buka form.blade (view/artikel/partial/form)
+    b.  tambahkan form untuk kolom kategori
+
+        <div class="form-group">
+            {!! Form::label('kategori','Kategori:') !!}
+            {!! Form::select('kategori',$kategori,null,['class'=>'form-control','multiple']) !!}
+        </div>
+
+2.  Setting di file Controllernya (ArtikelController)

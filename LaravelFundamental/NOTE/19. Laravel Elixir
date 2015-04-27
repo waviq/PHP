@@ -1,0 +1,35 @@
+1.  Pengertian Laravel Elixir
+    Laravel elixir merupakan API dari Gulp, bisa digunakan untuk CSS dan Javascript
+
+2.  Yang di perlukan untuk menggunakan Laravel Elixir
+    a.  Instal node.js (https://nodejs.org/)
+    b.  Instal gulp nya: npm install --global gulp
+    c.  Registerkan letak instalasi ke ENVIROMENT VARIABEL -> PATH
+        Edit PATH, masukan instalasi gulp yg bru d instal : C:\Users\waviq\AppData\Roaming\npm
+        KLIK OKE
+    d.  Setelah d register, ketika kita buka cmd kita akan bisa menggunakan command 'gulp'
+
+3.  Menggunakan gulp
+    a.  Secara default laravel 5 sudah ada file gulp, yang letaknya di directory utama project kita
+        dg nama file : gulpfile.js
+
+    b.  Kita dapat melakukan beberapa compile atau eksekusi code untuk CSS dan JS semua dapat
+        kita lakukan dalam file 'gulpfile.js'
+
+4.  Alur Proses dari Gulp
+
+    a.  Ketika kita melakukan compile di gulp, kita juga harus menuliskan mapping folder
+        di directory: resources/assets/folderMapping/namaFile.typeFile
+            folderMapping/namaFile.typeFile -> ini yg wajib di deklarasikan setiap compile
+
+        contoh:
+
+        elixir(function(mix) {
+            mix.less("coba.less");
+        });
+
+        -   mix.less("coba.less") = ini wajib di mapping dibuatkan file
+                                    di directory: resource/assets/less/coba.less
+
+    b.  Ketika kita compile gulp nya (cmd -> gulp), maka otomatis akan d buatkan file CSS di: public/css/coba.css
+

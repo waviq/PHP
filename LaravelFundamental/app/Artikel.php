@@ -25,5 +25,12 @@ class Artikel extends Model {
         return $this->belongsTo('App\User');
     }
 
+    /**Menandakan bahwa model class artikel dapat berhubungan 'banyak' dengan model class Katagori
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function Kategori(){
+        return $this->belongsToMany('App\Kategori','detail_kategori')->withTimestamps();
+    }
+
 
 }

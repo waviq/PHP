@@ -11,10 +11,25 @@ var elixir = require('laravel-elixir');
  |
  */
 
-elixir(function(mix) {
-    mix.less('app.less');
+elixir(function(campur) {
+    campur.sass('app.scss');
+
+    /*Campur file banyaak CSS*/
+    campur.styles([
+        'vendor/normal.css',
+        'app.css'
+    ], 'public/output/final.css', 'public/css');
+
+    campur.coffee('JQuery.coffee');
+    /*Campur file js*/
+    /*campur.scripts([
+        'vendor/jquery.js',
+        'main.js',
+        'contoh.js'
+    ],'public/output/script.js','public/js');*/
+
+
 });
 
-elixir(function(cba) {
-    cba.less('coba2.less');
-});
+
+

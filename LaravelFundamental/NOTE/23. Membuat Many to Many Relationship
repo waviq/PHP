@@ -1,0 +1,51 @@
+Analogi: a. Kita akan membuat relasi antara Artikel dengan Catagori(Tag) sebuah artikel yang akan di posting
+         b. Satu Artikel bisa punya beberapa katagori, Satu Katagori bisa punya beberapa Artikel (Many to Many)
+
+Cara membuatnya
+1.  File Modelnya
+    a.  Model Kategori
+
+        - Buat class Model Kategori
+            php artisan make:model Kategori
+
+    b.  Buat migrasi untuk Model Kategori
+
+        -   Buat tabel migrasinya
+                php artisan make:migration kategori
+
+        -   Buat kolom untuk tabel kategori
+
+                Schema::create('kategori', function (Blueprint $tabel)
+                {
+                    $tabel->increments('id');
+                    $tabel->string('namaKategori');
+                    $tabel->timestamps();
+                });
+
+        -   Buat tabel detail_kategori dalam file migrasi kategori (karna many to many
+            jadi wajib ada tabel detail)
+
+                Schema::create('detail_kategori', function (Blueprint $tabel)
+                {
+                    $tabel->integer('artikel_id')->unsigned()->index();
+                    $tabel->foreign('artikel_id')->references('id')->on('artikel')->onDelete('cascade');
+
+                    $tabel->integer('kategori_id')->unsigned()->index();
+                    $tabel->foreign('kategori_id')->references('id')->on('kategori')->onDelete('cascade');
+
+                    $tabel->timestamps();
+                    });
+                }
+
+                KETERANGAN:
+                -   unsigned() = agar integer selalu bernilai positif
+                -   index() = agar efisiensi nantinya dalam fungsi searching, karena sudah ada index nya
+                -   foreign('artikel_id') =  deklarasi bahwa 'artikel_id' merupakan sebagai kolom
+                                             foreign Key dari tabel artikel
+                -   foreign('kategori_id') = deklarasi bahwa 'kategori_id' merupakan sebagai kolom
+                                             foreign Key dari tabel kategori
+                -   onDelete('cascade') =  artinya jika tabel utama di hapus, maka kolom foreign Key juga akan terhapus
+                                           (jadi kolom pada detail_kategori juga akan terhapus jika tabel kategori dan
+                                           tabel artikel di hapus)
+
+
