@@ -1,14 +1,45 @@
-Analogi: a. Kita akan membuat relasi antara Artikel dengan Catagori(Tag) sebuah artikel yang akan di posting
+Analogi: a. Kita akan membuat relasi antara Artikel dengan Kategori(Tag) sebuah artikel yang akan di posting
          b. Satu Artikel bisa punya beberapa katagori, Satu Katagori bisa punya beberapa Artikel (Many to Many)
 
 Cara membuatnya
 1.  File Modelnya
     a.  Model Kategori
 
-        - Buat class Model Kategori
-            php artisan make:model Kategori
+        -   Buat class Model Kategori
+                php artisan make:model Kategori
 
-    b.  Buat migrasi untuk Model Kategori
+        -   Buat inisialisasi nama tabelnya (agar dikenali di database)
+                protected $table = 'kategori';
+
+        -   Buat kolom apa saja yang ditugaskan untuk supaya dapat di isi (biar gak terjadi mass assigment)
+                protected $fillable = ['namaKategori'];
+
+        -   Buat fungsi relasi Many to Many (ber relasi dg model Artikel)
+
+                public function artikel(){
+                    return $this->belongsToMany('App\Artikel');
+                }
+
+    b.  Model Artikel
+
+        -   Buat fungsi relasi Many to Many (penanda berelasi dg model Kategori)
+
+                public function Kategori(){
+                    return $this->belongsToMany('App\Kategori','detail_kategori')->withTimestamps();
+                }
+
+            KETERANGAN:
+
+            -   function Kategori() =  nama fungsi yang bersifat public, nantinya nama fungsi ini akan di pakai pada
+                                       class Controller (ArtikelController@store)
+            -   belongsToMany =  punya hubungan 'Many' dg model class 'Kategori'
+            -   App\Kategori =  directory letak model 'Kategori' di simpan
+            -   detail_kategori = Nama tabel detail kategori yang berisi beberapa foreign Key (jadi ketika insert
+                                  atau select data, akan ter select tabel 'kategori' dan tabel 'detail_kategori')
+            -   withTimestamps() =  biar waktu nya akan ikut ter update, saat insert/update data, jadi waktune
+                                    akan sama antara tabel yang ber relasi
+
+    c.  Buat migrasi untuk Model Kategori
 
         -   Buat tabel migrasinya
                 php artisan make:migration kategori
@@ -48,4 +79,11 @@ Cara membuatnya
                                            (jadi kolom pada detail_kategori juga akan terhapus jika tabel kategori dan
                                            tabel artikel di hapus)
 
+    2.  File Controllernya (ArtikelController@store)
+
+        penjelasan lengkapnya akan di bahas di note no 24 (Membuat UI View dari Many to Many)
+
+    3.  File View atau blade (tampilkan hasil dari ArtikelController@store)
+
+        penjelasan lengkapnya akan di bahas di note no 24 (Membuat UI View dari Many to Many)
 

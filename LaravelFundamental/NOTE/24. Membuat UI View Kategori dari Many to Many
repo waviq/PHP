@@ -10,3 +10,51 @@ Cara membuat tampilan UI untuk kolom Kategori dari relasi Many to Many (pada not
         </div>
 
 2.  Setting di file Controllernya (ArtikelController)
+
+    a.  Menampilkan isi database kolom namaKatagori pada form katagori
+
+            $kategori = Kategori::lists('namaKategori','id');
+
+        Keterangan:
+
+        -   $kategori = variabel penampung dan nantinya akan di panggil di file view/blade
+        -   Kategori = Panggil model class Kategori (jangan lupa d import)
+        -   lists =  menampilkan isi list dari tabel 'kategori'
+        -   namaKategori = nama kolom pada isi tabel 'kategori' di database, ini akan digunakan untuk
+                           menampilkan namaKategori dalam form create
+        -   id = kolom 'id' pada isi tabel 'kategori' di database, jadi kita akan gunakan 'id' untuk
+                 mengambil index nya ketika kita akan select pilihanya dan akan kita gunakan sebagai
+                 insert/update berdasarkan 'id' dari tabel 'kategori'
+
+    b.  Menyimpan select dari form agar tersimpan dalam database (atur pada fungsi ArtikelController@store)
+
+        -   Tambahkan code berikut agar inputan dari select ikut ke simpan dalam database
+            tabel artikel, kategori dan tabel detail_kategori
+
+                $artikels->kategori()->attach($request->input('kategori_list'));
+
+            Keterangan:
+
+            -   $artikels = variabel penampung dari fungsi save tanpa form select 'kategori'
+            -   kategori() = fungsi public yang ada pada class Model 'Artikel', fungsi ini dapat
+                             menyimpan ke 3 tabel sekaligus (artikel, kategori dan detail_kategori)
+            -   attach =  fungsi yang ada pada class 'belongsToMany' yang fungsinya untuk menyimpan
+                          beberapa tabel yang mempunya relasi
+            -   $request->input('kategori_list') = menyimpan request dari inputan select kolom 'kategori' pada form
+            -   kategori_list = di ambil dari class Model Artikel fungsi 'getKategoriListAttribute()'
+
+3.  Setting ulang di view/blade nya agar kolom form kategori dapat bekerja dalam fungsi untuk (nampilin isi db, create
+    dan edit/update) sesuai setting Controller (ArtikelController)
+
+    <!--Kategori form input-->
+    <div class="form-group">
+        {!! Form::label('kategori_list','Kategori:') !!}
+        {!! Form::select('kategori_list[]', $kategori, null,['class'=>'form-control','multiple']) !!}
+    </div>
+
+    Keterangan:
+    a.  kategori_list =  di ambil dari ArtikelController@create (untuk label dan Link create form)
+    b.  kategori_list =  di ambil dari class Model Artikel fungsi 'getKategoriListAttribute()'
+                         fungsinya adalah untuk menampilkan list dari select form kategori yg tersimpan di database
+                         (saat akan edit form)
+

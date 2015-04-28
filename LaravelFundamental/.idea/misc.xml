@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/database/migrations/2015_04_26_092231_create_kategoris_table.php" />
-  </component>
   <component name="ProjectRootManager" version="2" />
 </project>

@@ -24,8 +24,8 @@
 
 <!--Kategori form input-->
 <div class="form-group">
-    {!! Form::label('kategori','Kategori:') !!}
-    {!! Form::select('kategori[]', $kategori, null,['class'=>'form-control','multiple']) !!}
+    {!! Form::label('kategori_list','Kategori:') !!}
+    {!! Form::select('kategori_list[]', $kategori, null,['class'=>'form-control','multiple']) !!}
 </div>
 
 <!--Add Artikel Button Submit-->

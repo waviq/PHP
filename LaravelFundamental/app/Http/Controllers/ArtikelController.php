@@ -48,7 +48,7 @@ class ArtikelController extends Controller {
         $artikel = new Artikel($request->all());
         $artikels = Auth::user()->artikel()->save($artikel);//save ke tabel users n artikel
 
-        $artikels->kategori()->attach($request->input('kategori'));
+        $artikels->kategori()->attach($request->input('kategori_list'));
 
         flash()->overlay('Artikel berhasil di simpan','Horeee');
         /*\Session::flash('pesan','Artikel berhasil di simpan');*/
@@ -64,7 +64,9 @@ class ArtikelController extends Controller {
     public function edit(Artikel $artikel){
         //$artikel = Artikel::findOrFail($id);
 
-        return view('artikel.edit', compact('artikel'));
+        $kategori = Kategori::lists('namaKategori','id');
+
+        return view('artikel.edit', compact('artikel','kategori'));
     }
 
     public function update(Artikel $artikel, ArtikelRequest $validasi){

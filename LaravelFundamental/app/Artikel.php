@@ -32,5 +32,13 @@ class Artikel extends Model {
         return $this->belongsToMany('App\Kategori','detail_kategori')->withTimestamps();
     }
 
+    /**
+     * Get List id dari tabel kategori, d pakai di file blade saat aksi edit untuk
+     * menampilkan form mana yg ter select sesuai database tabel kategori n detail_kategori
+     */
+    public function getKategoriListAttribute(){
+        return $this->kategori->lists('id');
+    }
+
 
 }
