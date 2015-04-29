@@ -44,7 +44,7 @@ class ArtikelController extends Controller {
 
     public function store(ArtikelRequest $request){
 
-        /*dd($request->input('kategori'));*/
+        /*dd($request->input('published_at'));*/
         $artikel = new Artikel($request->all());
         $artikels = Auth::user()->artikel()->save($artikel);//save ke tabel users n artikel
 
@@ -69,10 +69,12 @@ class ArtikelController extends Controller {
         return view('artikel.edit', compact('artikel','kategori'));
     }
 
-    public function update(Artikel $artikel, ArtikelRequest $validasi){
+    public function update(Artikel $artikel, ArtikelRequest $request){
 
         //$artikel = Artikel::findOrFail($id);
-        $artikel->update($validasi->all());
+        $artikel->update($request->all());
+        $artikel->kategori()->sync($request->input('kategori_list'));
+        flash()->success('berhasil update artikel');
         return Redirect('artikel');
     }
 

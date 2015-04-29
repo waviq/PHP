@@ -12,21 +12,31 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(campur) {
-    campur.sass('app.scss');
+    campur.sass('app.scss','resources/css');
 
-    /*Campur file banyaak CSS*/
+    /*
+    a. Campur file banyaak CSS
+    b. file output secara default bernama all.css
+    c. secara default jg tersimpan di: public/css/all.css
+    */
     campur.styles([
-        'vendor/normal.css',
-        'app.css'
-    ], 'public/output/final.css', 'public/css');
+        'app.css',
+        'liblary/bootstrap.min.css',
+        'liblary/select2.min.css'
+    ]);
 
-    campur.coffee('JQuery.coffee');
-    /*Campur file js*/
-    /*campur.scripts([
-        'vendor/jquery.js',
-        'main.js',
-        'contoh.js'
-    ],'public/output/script.js','public/js');*/
+    /*
+    a. Campur banyak file JS,
+    b. File output akan custom bernama output.js,
+    c. tersimpan secara custom di: public/js.output.js
+    * */
+    campur.scripts([
+        //'liblary/bootstrap.min.js',
+        //'liblary/JQuery.js',
+        'liblary/select2.min.js'
+    ],'public/js/select2.js');
+
+
 
 
 });

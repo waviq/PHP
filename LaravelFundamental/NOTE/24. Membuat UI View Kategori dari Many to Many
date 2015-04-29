@@ -43,6 +43,20 @@ Cara membuat tampilan UI untuk kolom Kategori dari relasi Many to Many (pada not
             -   $request->input('kategori_list') = menyimpan request dari inputan select kolom 'kategori' pada form
             -   kategori_list = di ambil dari class Model Artikel fungsi 'getKategoriListAttribute()'
 
+    c.  Setting ulang fungsi update (ArtikelController@update) agar dapat mengupdate form kategori
+
+        -   Tambahkan code fungsi 'sync' pada fungsi 'update' agar data yg kita update akan
+            ter sinkronisasi antar relasi yang berhubungan
+
+                $artikel->kategori()->sync($request->input('kategori_list'));
+
+            NOTE:
+            Beberapa fungsi yang ada pada Many to Many relationship
+            a.  attach = untuk menambahkan record baru pada relasi
+            b.  sync = untuk sinkronisasi record, biasanya di pakai untuk update data
+            c.  detach = untuk menghapus relasi
+
+
 3.  Setting ulang di view/blade nya agar kolom form kategori dapat bekerja dalam fungsi untuk (nampilin isi db, create
     dan edit/update) sesuai setting Controller (ArtikelController)
 
@@ -57,4 +71,10 @@ Cara membuat tampilan UI untuk kolom Kategori dari relasi Many to Many (pada not
     b.  kategori_list =  di ambil dari class Model Artikel fungsi 'getKategoriListAttribute()'
                          fungsinya adalah untuk menampilkan list dari select form kategori yg tersimpan di database
                          (saat akan edit form)
+
+
+    Beberapa fungsi yang ada pada many to many relationship
+    a.  attach = untuk menambahkan record baru pada relasi
+    b.  sync = untuk sinkronisasi record, biasanya di pakai untuk update data
+    c.  detach = untuk menghapus relasi
 

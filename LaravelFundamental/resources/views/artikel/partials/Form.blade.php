@@ -25,10 +25,18 @@
 <!--Kategori form input-->
 <div class="form-group">
     {!! Form::label('kategori_list','Kategori:') !!}
-    {!! Form::select('kategori_list[]', $kategori, null,['class'=>'form-control','multiple']) !!}
+    {!! Form::select('kategori_list[]', $kategori, null,['id'=>'kategoriList', 'class'=>'form-control','multiple']) !!}
 </div>
 
 <!--Add Artikel Button Submit-->
 <div class="form-group">
     {!! Form::submit($namaTombol, ['class' =>'btn btn-primary form-control']) !!}
 </div>
+
+
+<script>
+    $('#kategoriList').select2({
+        placeholder:'Pilih Kategori'
+    });
+</script>
+

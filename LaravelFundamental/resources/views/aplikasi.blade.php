@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <title>Document</title>
 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" href="/css/all.css">
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="/js/select2.js"></script>
+
 
 </head>
 <body>
@@ -30,6 +32,11 @@
 <script>
     $('#flash-overlay-modal').modal();
 </script>
+
+
+
+
+
 
 </body>
 </html>

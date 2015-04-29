@@ -1,0 +1,33 @@
+Untuk membuat tampilan select kategori lebih menarik, kita gunakan 'JQuery select2'
+
+1.  Download dolo css dan javascript dari plugn select2
+    a.  untuk css nya
+        <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+
+    b.  untuk javascript nya
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+2.  import script pada header 'aplikasi.blade'
+
+    a.  untuk import css nya
+        <link rel="stylesheet" href="/css/all.css">
+
+    b.  untuk import js nya
+        <script src="/js/select2.js"></script>
+
+        NOTE:
+        -   untuk css nya nama filenya 'all.css' merupakan gabungan semua css yg ada pada directory
+            resource, untuk menggabunginya menggunakan 'gulp'
+        -   untuk css nya nama filenya 'select2.js' hasil download sourcenya -> kemudian di copy source
+            codenya -> dan di olah menggunakan gulp
+
+3.  Panggil fungsinya dari plugn select2 di view/blade
+
+    a.  Buka form.blade
+    b.  tambahkan script berikut untuk memunggunakan plugn JQuery select2
+
+        <script>
+            $('#kategoriList').select2({
+                placeholder:'Pilih Kategori'
+            });
+        </script>
