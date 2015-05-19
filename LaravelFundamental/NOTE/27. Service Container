@@ -1,0 +1,82 @@
+Service Container
+Service container digunakan untuk manage atau mengatur beberapa class lain menggunakan despendensi injeksi.
+Despendensi injeksi adalah meng injeksi sebuah class tertentu dalam class via
+class construktor atau menggunakan 'setter' methods
+
+Class Despendency
+adalah kondisi dimana kita membutuhkan class lain untuk membuat objek dari sebuah class
+
+Service Container
+berfungsi sebagai sebuah tempat dimana kita bisa menyimpan berbagai hal dari string biasa,
+closure, object, class, dll
+
+Contoh menggunakan Service Container (injeksi class)
+1.  Buat file class Dompet
+
+    namespace app\Container;
+
+    class Dompet {
+
+        private $saldo;
+        public function __construct($saldo = 100){
+            $this->saldo = $saldo;
+        }
+        public function cekIsi(){
+            return $this->saldo;
+        }
+    }
+
+2.  Buat file class Customer (melakukan injeksi pada class Dompet)
+
+    namespace app\Container;
+
+    class Customer {
+
+        private $dompet;
+        function __construct(Dompet $dompet)
+        {
+            $this->dompet = $dompet;
+        }
+        public function cekDompet(){
+            return $this->dompet->cekIsi();
+        }
+    }
+
+    NOTE
+    a.  Untuk melakukan injeksi class, kita WAJIB membuat construktor
+    b.  Pada construktor, kita dapat memanggil (injeksi) class lain
+    c.  Dengan menggunakan construktor, kita bisa memanggil fungsi yang ada pada class yang di panggil
+    d.  Pada contoh di atas, class Customer -> menanggil class Dompet -> dan memanggil fungsi cekIsi().
+        CekIsi () =  merupakan fungsi yang ada pada class Dompet
+
+Dalam Service Container ada:
+1.  Binding dan Resolve
+    a.  Binding
+        -   Ketika kita menyimpan 'sesuatu' ke dalam Service Container.
+        -   Harus menyidiakan 'Key' dan 'Value'
+        -   Biasanya proses binding dilakukan di Service Provider pada method 'register()'
+        -   di Service Provider untuk mendapatkan instance dari Service Container dapat menggunakan:
+                $this->app
+
+            Formatnya:
+
+                $this->app->bind('KEY','Value');
+
+            Contoh:
+
+            $this->app->bind('Apa itu laravel', function(){
+                return 'Laravel adalah framework PHP yang banyak dimninati orang';
+            });
+
+    b.  Resolve
+        -   ketika kita mengambil 'sesuatu' dari Service Container.
+        -   Untuk mengambilnya kita menggunakan 'Key' dan 'Value' yang telah di inisialisasi
+            dalam binding
+        -   untuk mengambilnya (resolve nilai/objek dari Service Container)bisa menggunakan
+            beberapa cara, diantaranya:
+
+                -   app('KEY');
+
+                -   $Variabel = $this->app->make('KEY');
+
+                -   $Variabel = $this->app['KEY']; (untuk tipe array)

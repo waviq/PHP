@@ -1,0 +1,72 @@
+View Composer
+Menampilkan seseatu ke View dg single settingan, jadi lebih flexibel
+View composer adalah memanggil kembali class yg berisi fungsi ketika 'View' di berikan.
+Jika kita punya data banyak yang ingin tampilkan bersama di view, view komposerlah
+logic yang kita pakai untuk single lokasi settingnya
+
+Kasus: Kita akan menambahkan navBar dari Bootstrap dalam aplikasi kita,
+       agar semua halaman bisa tampil navBarnya dan tidak error, maka perlu
+       menggunakan view composer
+       file navbar tersimpan di : view/partials/navMenu.blade
+
+Cara menggunakan View Composer
+1.  Buat file composer Service Provider, dengan menggunakan CMD
+
+        formatnya : php artisan make:provider namaFileComposerServiceProvider
+
+        contoh: php artisan make:provider ViewComposerServiceProvider
+
+    Dengan perintah di atas, akan ter generate file dg nama 'ViewComposerServiceProvider'
+    dalam directory : app/Providers/ViewComposerServiceProvider.php
+
+2.  Registerkan file ServiceProvider yang baru kita buat ke dalam file config/app.php
+    a.  Registerkan letak penyimpanan class ServiceProvider kita yang bru d buat
+        dalam array providers
+
+        'App\Providers\ViewComposerServiceProvider'
+
+3.  Registerkan View (File blade) ke dalam fungsi 'boot' dalam ServiceProvider
+    (ViewComposerServiceProvider)
+
+        view()->composer('partials.navMenu', function ($view)
+        {
+            $view->with('latest', Artikel::latest()->first());
+        });
+
+        Keterangan:
+        a.  view()->composer('partials.navMenu'
+            Memanggil view (file blade) yang mau dijadikan single logic composer view
+        b.  $view =  variabel penampung pada fungsi
+        c.  latest = fungsi yang menampilkan post terbaru -  terlama pada halaman index,
+                     agar berurutan saat di tampilkan di index(halaman utama)
+
+        NOTE:
+              $view->with('latest', Artikel::latest()->first());
+              Jika COde di atas di hapus, maka tidak akan eror, standart e yang penting
+              letak file View kita di registerkan dalam fungsi boot di service provider
+
+4.  Agar lebih flexibel dan bisa di gunakan dalam fungsi manapun, maka Code di atas dapat
+    dimasukan dalam suatu fungsi tersendiri, dan nantinya fungsi tersebut di panggil di fungsi 'boot'
+
+    a.  Buat fungsi private untuk menampung code yg ada di fungsi boot d atas, dan masukan code
+        yang ada pada fungsi boot -> masukan dalam fungsi private yg akan kita buat baru
+
+        Maka code lengkapnya akan seperti ini
+
+            private function composeNavMenu()
+            {
+                view()->composer('partials.navMenu', function ($view)
+                {
+                    $view->with('latest', Artikel::latest()->first());
+                });
+            }
+
+    b.  Panggil fungsi yang bru kita bikin -> masukan ke dalam fungsi boot
+
+        public function boot()
+        {
+            $this->composeNavMenu();
+        }
+
+        dengan cara di atas, code lebih akan flexibel, rapi dan dapat di panggil di beberapa class
+

@@ -24,7 +24,10 @@ class ArtikelController extends Controller {
     public function index(){
 
         $artikel = Artikel::latest('published_at')->get();
-        return view('artikel.index',compact('artikel'));
+
+        $latest = Artikel::latest()->first();
+
+        return view('artikel.index',compact('artikel','latest'));
     }
 
     public function show(Artikel $artikel){

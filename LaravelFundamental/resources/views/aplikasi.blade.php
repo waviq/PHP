@@ -13,6 +13,8 @@
 </head>
 <body>
 
+@include('partials.navMenu')
+
 <div class="container">
 
     @include('flash::message')
