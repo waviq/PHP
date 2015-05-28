@@ -31,4 +31,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
+    /**
+     * User punya hubungan relasi Many dg Pemberitahuan
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pemberitahuans(){
+        return $this->hasMany('App\Pemberitahuan');
+    }
+
 }

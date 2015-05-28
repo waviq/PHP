@@ -1,2 +1,12 @@
 @import 'partials/_colors';
 @import 'partials/headings';
+
+.flash{
+  background: #F6624A;
+  color: white;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  padding: 1em;
+  display: none;
+}
