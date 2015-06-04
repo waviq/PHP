@@ -13,7 +13,7 @@ class HalamanUtamaController extends Controller {
 
 	public function index()
 	{
-		return view('Page.HalamanUtama');
+		return view('Page.Home');
 	}
 
 

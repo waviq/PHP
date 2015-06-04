@@ -4,7 +4,7 @@
 
         {{--Logo--}}
         <a class="logo" href="#">
-            <img src="assets/img/logo1-default.png" alt="Logo">
+            <img src="{{asset('assets/img/LogoOkeKecil.png')}}" alt="Logo">
         </a>
         {{--End Logo--}}
 
@@ -25,8 +25,14 @@
 
                 <li class="topbar-devider"></li>
                 <li><a href="#">Help</a></li>
-                <li class="topbar-devider"></li>
-                <li><a href="{{url('/auth/masuk')}}">Login</a></li>
+
+                @if(Auth::guest())
+                    <li class="topbar-devider"></li>
+                    <li><a href="{{url('/auth/masuk')}}">Login</a></li>
+                @else
+                    <li class="topbar-devider"></li>
+                    <li><a href="{{url('/auth/logout')}}">Logout</a></li>
+                @endif
             </ul>
         </div>
         {{--End Topbar--}}
@@ -47,23 +53,10 @@
             <ul class="nav navbar-nav">
                 {{--Home--}}
                 <li class="dropdown active">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="{{url('/')}}">
                         Home
                     </a>
 
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Page 1</a></li>
-
-                        {{--sub Menu--}}
-                        <li class="dropdown-submenu">
-                            <a href="javascript:void(0);">Page 2</a>
-                            <ul class="dropdown-menu">
-                                <li><a target="_blank" href="#">Sub Menu 1</a></li>
-                                <li><a target="_blank" href="#">Sub Menu 2</a></li>
-                            </ul>
-                        </li>
-                        {{--end subMenu--}}
-                    </ul>
                 </li>
 
                 <li class="dropdown active">
