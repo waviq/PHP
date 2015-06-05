@@ -30,6 +30,3 @@
 
 <!-- CSS Page Style -->
 <link rel="stylesheet" href="{{asset('assets/css/pages/page_log_reg_v1.css')}}">
-
-{{--CSS Blog Page--}}
-<link rel="stylesheet" href="{{asset('assets/css/pages/blog.css')}}">

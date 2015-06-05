@@ -19,19 +19,32 @@
                             <a href="#">English <i class="fa fa-check"></i></a>
                         </li>
                         <li><a href="#">Indonesia</a></li>
-                        <li><a href="#">German</a></li>
+                        <li><a href="#">Jawa Tegal</a></li>
                     </ul>
                 </li>
 
                 <li class="topbar-devider"></li>
                 <li><a href="#">Help</a></li>
 
+
                 @if(Auth::guest())
                     <li class="topbar-devider"></li>
                     <li><a href="{{url('/auth/masuk')}}">Login</a></li>
                 @else
+
                     <li class="topbar-devider"></li>
-                    <li><a href="{{url('/auth/logout')}}">Logout</a></li>
+                    <li class="hoverSelector">
+
+
+                        <a>{{ Auth::user()->name }}</a>
+                        <ul class="languages hoverSelectorBlock">
+                            <li><a href="{{url('/auth/logout')}}">Logout</a></li>
+                            <li><a href="#">Profile</a></li>
+                        </ul>
+                    </li>
+
+
+
                 @endif
             </ul>
         </div>
@@ -60,10 +73,12 @@
                 </li>
 
                 <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="{{url('/blog')}}">
                         Blog
                     </a>
                 </li>
+
+
             </ul>
         </div>
     </div>
