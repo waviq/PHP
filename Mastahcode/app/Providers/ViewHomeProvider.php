@@ -11,9 +11,7 @@ class ViewHomeProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		view()->composer('Page.HalamanUtama', function($view){
 
-        });
 	}
 
 	/**

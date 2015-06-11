@@ -33,3 +33,4 @@
 
 {{--CSS Blog Page--}}
 <link rel="stylesheet" href="{{asset('assets/css/pages/blog.css')}}">
+

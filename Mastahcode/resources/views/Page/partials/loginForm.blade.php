@@ -27,7 +27,7 @@
 <!-- form input checkbox-->
 <div class="row">
     <div class="col-md-6 checkbox">
-        <label><input type="checkbox" name="agree"> Stay signed in</label>
+        <label><input type="checkbox" name="remember"> Remember Me</label>
     </div>
 
     <!-- Button Login-->

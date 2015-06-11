@@ -22,13 +22,12 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('test', function(){
-    return view('Page.Login');
-});
 
 Route::get('coba', function(){
    return view('Page.coba') ;
 });
 
 Route::resource('blog', 'BlogController');
+
+Route::resource('profile','ProfileController');
 
