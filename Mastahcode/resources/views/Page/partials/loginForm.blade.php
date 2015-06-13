@@ -10,7 +10,7 @@
         <li><a class="rounded-x social_googleplus" data-original-title="Google Plus" href="#"></a></li>
         <li><a class="rounded-x social_linkedin" data-original-title="Linkedin" href="#"></a></li>
     </ul>
-    <p>Belum punya akun? Klik <a class="color-green" href="{{url('/auth/registrasi')}}">Sign Up</a> untuk registrasi</p>
+    <p>Belum punya akun? Klik <a class="color-green" href="{{url('/auth/register')}}">Sign Up</a> untuk registrasi</p>
 </div>
 <!-- form input Username-->
 <div class="input-group margin-bottom-20">
